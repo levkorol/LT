@@ -15,7 +15,7 @@ import com.skaz.eliot.R
 import com.skaz.eliot.Services.UserDataService
 
 class DevicesRecycleAdapter(
-    val context: Context, 
+    val context: Context,
     val devices: List<Device>,
     val devicesInfo: List<DeviceInfo>,
     val deviceTariffs: List<DeviceTariff>,
