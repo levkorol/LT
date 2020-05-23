@@ -1,4 +1,17 @@
 package com.skaz.eliot.Model
 
-class DeviceAllData (val deviceDate: String, val pw_1: String, val pw_2: String, val pw_3: String, val amper_1: String, val amper_2: String,
-                     val amper_3: String, val volt_1: String, val volt_2: String, val volt_3: String)
+data class DeviceAllData(
+    var deviceDate: String,
+    var pw_1: Double,
+    var pw_2: Double,
+    var pw_3: Double,
+    var amper_1: Double,
+    var amper_2: Double,
+    var amper_3: Double,
+    var volt_1: Double,
+    var volt_2: Double,
+    var volt_3: Double,
+    var cur: Double,
+    var notice: String,
+    var error: String
+)

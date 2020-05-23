@@ -60,6 +60,7 @@ object AuthService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
+                headers.put("X-Platform", "ANDROID")
                 return headers
             }
 
@@ -109,6 +110,7 @@ object AuthService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
+                headers.put("X-Platform", "ANDROID")
                 return headers
             }
 

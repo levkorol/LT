@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         loginSpinner.visibility = View.INVISIBLE
 
-
-
         if (App.prefs.isLoggedIn) {
 
             enableSpinner(true)
@@ -42,30 +40,16 @@ class MainActivity : AppCompatActivity() {
 
                     AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
                         if (getSession) {
-
                             deviceInfo()
-
-
-
                         } else {
                             Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
                             enableSpinner(false)
                         }
-
                     }
-
-
-
-
                 } else {
             enableSpinner(false)
           //  Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
                 }
-
-
-
-
-
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -115,22 +99,15 @@ class MainActivity : AppCompatActivity() {
     fun spinnerStop() {
         Thread(Runnable {
             // performing some dummy time taking operation
-
-
             // try to touch View of UI thread
-            this@MainActivity.runOnUiThread({
+            this@MainActivity.runOnUiThread {
                 enableSpinner(false)
-            })
+            }
         }).start()
-
-
-
     }
 
     fun loginBtnClicked(view: View) {
         enableSpinner(true)
-
-
         val login = loginEmailTxt.text.toString()
         val password = loginPasswordText.text.toString()
         hideKeyboard()
@@ -143,19 +120,14 @@ class MainActivity : AppCompatActivity() {
                             if (getSession) {
                                 App.prefs.isLoggedIn = true
                                 DataService.deviceRequest(App.prefs.authToken){ complete ->
-
                                 }
-
                             }
-
                         }
 
                         Timer("SettingUp", false).schedule(2500) {
                             spinnerStop()
                             nextActivity()
                         }
-
-
                 } else {
                         Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
                     errorToast()

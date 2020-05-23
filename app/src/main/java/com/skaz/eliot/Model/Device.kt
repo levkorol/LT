@@ -1,3 +1,14 @@
 package com.skaz.eliot.Model
 
-class Device (val id: String, val type_id: String, val type: String)
+data class Device(
+    val id: Int,
+    val type_id: Int,
+    val type: String,
+    val category: String,
+    val deviceInfo: DeviceInfo?,
+    val last_data: DeviceAllData?,
+    val deviceTariff: DeviceTariff?,
+    val interval: Boolean,
+    val startDateToShow: String,
+    val endDateToShow: String
+    )

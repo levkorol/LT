@@ -35,11 +35,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.widget.DatePicker
 
 
-
-
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-
 
     var startCal = Calendar.getInstance()
     var endCal = Calendar.getInstance()
@@ -52,16 +48,10 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
 
-
-
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device)
         //   setSupportActionBar(toolbar)
-
 
         lateinit var adapter: DevicesRecycleAdapter
 
@@ -72,7 +62,9 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             DataService.deviceAccTariff,
             DataService.deviceAllData
         )
+
         devicesListView.adapter = adapter
+        adapter.notifyDataSetChanged()
 
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
@@ -99,139 +91,27 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
-
-
-                Log.d("RUN", "RUN")
-                mSwipe.isRefreshing = false
-                DataService.deviceRequest(App.prefs.authToken) { complete ->
-                    if (complete) {
-                        mSwipe.isRefreshing = false
-                        adapter = DevicesRecycleAdapter(
-                            this,
-                            DataService.devices,
-                            DataService.deviceInfoArray,
-                            DataService.deviceAccTariff,
-                            DataService.deviceAllData
-                        )
-                        devicesListView.adapter = adapter
-                        Log.d("REFRESH", "Refreshed")
-                    } else {
-                        mSwipe.isRefreshing = false
-                        Log.d("ERROR", "${App.prefs.authToken}")
-
-                    }
+            Log.d("RUN", "RUN")
+            mSwipe.isRefreshing = false
+            DataService.deviceRequest(App.prefs.authToken) { complete ->
+                if (complete) {
+                    mSwipe.isRefreshing = false
+                    adapter = DevicesRecycleAdapter(
+                        this,
+                        DataService.devices,
+                        DataService.deviceInfoArray,
+                        DataService.deviceAccTariff,
+                        DataService.deviceAllData
+                    )
+                    devicesListView.adapter = adapter
+                    Log.d("REFRESH", "Refreshed")
+                } else {
+                    mSwipe.isRefreshing = false
+                    Log.d("ERROR", "${App.prefs.authToken}")
                 }
-
-        }
-    }
-
-
-
-    fun showDurationStartBtnClicked(view: View) {
-
-
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, day ->
-            // dateTv.setText("" + dayOfMonth + "/" + (month + 1) + "/" + year)
-
-            when (monthStart) {
-                0 -> UserDataService.ruStartMonth = "янв."
-                1 -> UserDataService.ruStartMonth = "фев."
-                2 -> UserDataService.ruStartMonth = "мар."
-                3 -> UserDataService.ruStartMonth = "апр."
-                4 -> UserDataService.ruStartMonth = "май."
-                5 -> UserDataService.ruStartMonth = "июн."
-                6 -> UserDataService.ruStartMonth = "июл."
-                7 -> UserDataService.ruStartMonth = "авг."
-                8 -> UserDataService.ruStartMonth = "сен."
-                9 -> UserDataService.ruStartMonth = "окт."
-                10 -> UserDataService.ruStartMonth = "ноя."
-                11 -> UserDataService.ruStartMonth = "дек."
-                else -> UserDataService.ruStartMonth = "янв."
-            }
-
-            UserDataService.startDate = ("" + day + " " + UserDataService.ruStartMonth + " " + year)
-            UserDataService.defaultBeginDateSend = ("" + year + "-" + (month + 1) + "-" + day + " 00:00:00")
-            Log.d("SHOW_START_DATE", UserDataService.defaultBeginDateSend)
-            beginDurationLbl.text = UserDataService.startDate
-
-            yearStart = year
-            monthStart = month
-            dayStart = day
-
-        }, yearStart, monthStart, dayStart)
-
-        dpd.show()
-
-
-    }
-
-    fun showDurationEndBtnClicked(view: View) {
-
-
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, day ->
-
-            when (month) {
-                0 -> UserDataService.ruEndMonth = "янв."
-                1 -> UserDataService.ruEndMonth = "фев."
-                2 -> UserDataService.ruEndMonth = "мар."
-                3 -> UserDataService.ruEndMonth = "апр."
-                4 -> UserDataService.ruEndMonth = "май."
-                5 -> UserDataService.ruEndMonth = "июн."
-                6 -> UserDataService.ruEndMonth = "июл."
-                7 -> UserDataService.ruEndMonth = "авг."
-                8 -> UserDataService.ruEndMonth = "сен."
-                9 -> UserDataService.ruEndMonth = "окт."
-                10 -> UserDataService.ruEndMonth = "ноя."
-                11 -> UserDataService.ruEndMonth = "дек."
-                else -> UserDataService.ruEndMonth = "янв."
-            }
-
-            UserDataService.endDate = ("" + day + " " + UserDataService.ruEndMonth + " " + year)
-            UserDataService.defaultEndDateSend = ("" + year + "-" + (month + 1) + "-" + day + " 23:59:59")
-            Log.d("SHOW_END_DATE", UserDataService.defaultEndDateSend)
-            endDurationLbl.text = UserDataService.endDate
-
-            yearEnd = year
-            monthEnd = month
-            dayEnd = day
-
-        }, yearEnd, monthEnd, dayEnd)
-
-
-        dpd.show()
-
-    }
-
-    fun showDurationBtnClicked(view: View) {
-        durationUseLbl.text = "Потребление за период"
-        DataService.deviceTariffSelectDateRequest(DataService.sessionForeReguest, DataService.deviceId, UserDataService.defaultBeginDateSend, UserDataService.defaultEndDateSend) {success ->
-            if (success) {
-                dayUseLbl.text = "${deviceSelectData[0].t1} кВт*ч"
-                nightUseLbl.text = "${deviceSelectData[0].t2} кВт*ч"
-                allUseLbl.text = "${deviceSelectData[0].t3} кВт*ч"
-
-                Log.d("SUC", "SESS")
             }
         }
     }
-
-    fun resetDurationBtnClicked(view: View) {
-        beginDurationLbl.text = "01 янв. 2019"
-
-        endDurationLbl.text = UserDataService.defaultEndDate
-        durationUseLbl.text = "Потребление за все время"
-        DataService.deviceTariffRequest(DataService.sessionForeReguest, DataService.deviceId) { success ->
-            if (success) {
-                 dayUseLbl.text = "${deviceAccTariff[0].t1} кВт*ч"
-
-                nightUseLbl.text = "${deviceAccTariff[0].t2} кВт*ч"
-                allUseLbl.text = "${deviceAccTariff[0].t3} кВт*ч"
-            }
-        }
-
-    }
-
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -251,9 +131,9 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -275,30 +155,128 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 val mainIntent = Intent(this, MainActivity::class.java)
                 mainIntent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
                 startActivity(mainIntent)
-
             }
-
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    private val userDataChangeReceiver = object: BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent?) {
+    fun showDurationStartBtnClicked(view: View) {
+        val dpd =
+            DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                // dateTv.setText("" + dayOfMonth + "/" + (month + 1) + "/" + year)
 
-            if (App.prefs.isLoggedIn) {
-                nameLbl.text = UserDataService.fio
+                when (monthStart) {
+                    0 -> UserDataService.ruStartMonth = "янв."
+                    1 -> UserDataService.ruStartMonth = "фев."
+                    2 -> UserDataService.ruStartMonth = "мар."
+                    3 -> UserDataService.ruStartMonth = "апр."
+                    4 -> UserDataService.ruStartMonth = "май."
+                    5 -> UserDataService.ruStartMonth = "июн."
+                    6 -> UserDataService.ruStartMonth = "июл."
+                    7 -> UserDataService.ruStartMonth = "авг."
+                    8 -> UserDataService.ruStartMonth = "сен."
+                    9 -> UserDataService.ruStartMonth = "окт."
+                    10 -> UserDataService.ruStartMonth = "ноя."
+                    11 -> UserDataService.ruStartMonth = "дек."
+                    else -> UserDataService.ruStartMonth = "янв."
+                }
+
+                UserDataService.startDate =
+                    ("" + day + " " + UserDataService.ruStartMonth + " " + year)
+                UserDataService.defaultBeginDateSend =
+                    ("" + year + "-" + (month + 1) + "-" + day + " 00:00:00")
+                Log.d("SHOW_START_DATE", UserDataService.defaultBeginDateSend)
+                beginDurationLbl.text = UserDataService.startDate
+
+                yearStart = year
+                monthStart = month
+                dayStart = day
+
+            }, yearStart, monthStart, dayStart)
+
+        dpd.show()
 
 
+    }
+
+    fun showDurationEndBtnClicked(view: View) {
+        val dpd =
+            DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                when (month) {
+                    0 -> UserDataService.ruEndMonth = "янв."
+                    1 -> UserDataService.ruEndMonth = "фев."
+                    2 -> UserDataService.ruEndMonth = "мар."
+                    3 -> UserDataService.ruEndMonth = "апр."
+                    4 -> UserDataService.ruEndMonth = "май."
+                    5 -> UserDataService.ruEndMonth = "июн."
+                    6 -> UserDataService.ruEndMonth = "июл."
+                    7 -> UserDataService.ruEndMonth = "авг."
+                    8 -> UserDataService.ruEndMonth = "сен."
+                    9 -> UserDataService.ruEndMonth = "окт."
+                    10 -> UserDataService.ruEndMonth = "ноя."
+                    11 -> UserDataService.ruEndMonth = "дек."
+                    else -> UserDataService.ruEndMonth = "янв."
+                }
+                UserDataService.endDate = ("" + day + " " + UserDataService.ruEndMonth + " " + year)
+                UserDataService.defaultEndDateSend =
+                    ("" + year + "-" + (month + 1) + "-" + day + " 23:59:59")
+                Log.d("SHOW_END_DATE", UserDataService.defaultEndDateSend)
+                endDurationLbl.text = UserDataService.endDate
+
+                yearEnd = year
+                monthEnd = month
+                dayEnd = day
+
+            }, yearEnd, monthEnd, dayEnd)
+
+
+        dpd.show()
+
+    }
+
+    fun showDurationBtnClicked(view: View) {
+        durationUseLbl.text = "Потребление за период"
+        DataService.deviceTariffSelectDateRequest(
+            DataService.sessionForeReguest,
+            DataService.deviceId,
+            UserDataService.defaultBeginDateSend,
+            UserDataService.defaultEndDateSend
+        ) { success ->
+            if (success) {
+                dayUseLbl.text = "${deviceSelectData[0].t1} кВт*ч"
+                nightUseLbl.text = "${deviceSelectData[0].t2} кВт*ч"
+            //    allUseLbl.text = "${deviceSelectData[0].t3} кВт*ч"
+
+                Log.d("SUC", "SESS")
             }
         }
     }
 
+    fun resetDurationBtnClicked(view: View) {
+        beginDurationLbl.text = "01 янв. 2019"
 
+        endDurationLbl.text = UserDataService.defaultEndDate
+        durationUseLbl.text = "Потребление за все время"
+        DataService.deviceTariffRequest(
+            DataService.sessionForeReguest,
+            DataService.deviceId
+        ) { success ->
+            if (success) {
+                dayUseLbl.text = "${deviceAccTariff[0].t1} кВт*ч"
 
+                nightUseLbl.text = "${deviceAccTariff[0].t2} кВт*ч"
+              //  allUseLbl.text = "${deviceAccTariff[0].t3} кВт*ч"   //TODO 3y kvadrat summa kilovat
+            }
+        }
+    }
 
-
-
-
+    private val userDataChangeReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent?) {
+            if (App.prefs.isLoggedIn) {
+                nameLbl.text = UserDataService.fio
+            }
+        }
+    }
 }

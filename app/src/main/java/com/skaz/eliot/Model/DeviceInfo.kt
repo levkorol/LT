@@ -1,3 +1,6 @@
 package com.skaz.eliot.Model
 
-class DeviceInfo (val serial: String, val last_act: String)
+data class DeviceInfo (
+    var serial: String,
+    var last_act: String,
+    val type: String)

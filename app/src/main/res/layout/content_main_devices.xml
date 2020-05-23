@@ -1,398 +1,580 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="380dp"
-        android:orientation="vertical"
-        android:background="@android:color/white">
-
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
 
     <ImageView
-            android:layout_height="30dp" app:srcCompat="@color/colorSelect"
-            android:id="@+id/imageView10" app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/imageView10"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="0dp"/>
-    <TextView
-            android:text="Дата | Время"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl2"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo_2_medium"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/showUseLbl3"
-            app:layout_constraintTop_toTopOf="@+id/imageView10"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView10" android:layout_marginStart="8dp"/>
-    <TextView
-            android:text="Фаза"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl3"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo_2_medium"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/showUseLbl2" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/showUseLbl4" app:layout_constraintTop_toTopOf="@+id/imageView10"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2"/>
-    <TextView
-            android:text="Ток(А)"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl4"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo_2_medium"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/showUseLbl3" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/showUseLbl5" app:layout_constraintTop_toTopOf="@+id/imageView10"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2" app:layout_constraintVertical_bias="0.0"/>
-    <TextView
-            android:text="Мощность(Вт)"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl5"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo_2_medium"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/showUseLbl4" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/showUseLbl6" app:layout_constraintTop_toTopOf="@+id/imageView10"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2" app:layout_constraintVertical_bias="0.0"/>
-    <TextView
-            android:text="Напряжение(В)"
-            android:layout_width="74dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl6"
-            android:textColor="@android:color/white"
-            android:fontFamily="@font/exo_2_medium"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/showUseLbl5" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="@+id/imageView10"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2" app:layout_constraintVertical_bias="0.0"
-            android:layout_marginEnd="8dp"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="45dp" app:srcCompat="@drawable/shetico"
-            android:id="@+id/deviceImage" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-            android:text="Счётчик (ЭЭ)"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/deviceLbl" app:layout_constraintStart_toEndOf="@+id/deviceImage"
-            android:layout_marginStart="16dp" app:layout_constraintTop_toTopOf="@+id/deviceImage"
-            android:fontFamily="@font/exo_2_medium"/>
-    <TextView
-            android:text="ID: 114 |"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/idLbl"
-            android:fontFamily="@font/exo_2_medium" android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/deviceLbl"
-            app:layout_constraintStart_toStartOf="@+id/deviceLbl"/>
-    <TextView
-            android:text="Последняя активность: 2018-12-25 16:24:37"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/lastActLbl"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp"
-            app:layout_constraintTop_toBottomOf="@+id/idLbl"
-            app:layout_constraintStart_toStartOf="@+id/idLbl" android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintBottom_toBottomOf="@+id/deviceImage"/>
-    <TextView
-            android:text="Серийный номер: 4073962"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/serialLbl"
-            android:fontFamily="@font/exo_2_medium" android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/deviceLbl" app:layout_constraintStart_toEndOf="@+id/idLbl"
-            android:layout_marginStart="8dp"/>
-    <ImageView
-            android:layout_width="235dp"
-            android:layout_height="30dp" app:srcCompat="@color/colorSelect"
-            android:id="@+id/imageView6" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lastActLbl" android:layout_marginTop="8dp"/>
-    <TextView
-            android:text="Показать потребление за период:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/showUseLbl" app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toTopOf="@+id/imageView6"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6" android:textColor="@android:color/white"
-            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
-            android:fontFamily="@font/exo_2_medium" app:layout_constraintHorizontal_bias="0.666"
-            app:layout_constraintVertical_bias="0.636"/>
-    <Button
-            android:text="Сбросить период"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:id="@+id/resetDurationBtn" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:textSize="10sp"
-            android:fontFamily="@font/exo_2_medium"
-            style="@style/AppTheme.RoundedCornerMaterialButton" android:textColor="@android:color/black"
-            android:paddingLeft="8dp" android:paddingRight="8dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView6" android:layout_marginTop="-1dp"
-            android:onClick="resetDurationBtnClicked"/>
-    <Button
-            android:text="Показать"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:id="@+id/showDurationBtn"
-            android:textSize="10sp"
-            android:fontFamily="@font/exo_2_medium"
-            style="@style/AppTheme.RoundedCornerMaterialButton2" android:textColor="@android:color/black"
-            android:paddingLeft="8dp" android:paddingRight="8dp"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/resetDurationBtn"
-            app:layout_constraintStart_toStartOf="@+id/resetDurationBtn"
-            app:layout_constraintEnd_toEndOf="@+id/resetDurationBtn" android:onClick="showDurationBtnClicked"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/calendar"
-            android:id="@+id/imageView7"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
-    <TextView
-            android:text="Начало:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2" app:layout_constraintStart_toEndOf="@+id/imageView7"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/exo_2_medium" android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6" android:layout_marginTop="8dp"/>
-    <TextView
-            android:text="Конец:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView4"
-            android:fontFamily="@font/exo_2_medium" android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView6"
-            app:layout_constraintStart_toEndOf="@+id/beginDurationLbl" android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"/>
-    <TextView
-            android:text="01 янв. 2019"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/beginDurationLbl" app:layout_constraintStart_toEndOf="@+id/imageView7"
-            android:layout_marginStart="8dp" android:fontFamily="@font/exo_2_medium"
-            android:textColor="@android:color/black"
-            android:onClick = "showDurationStartBtnClicked"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"/>
-    <TextView
-            android:text="01 янв. 2019"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/endDurationLbl"
-            android:fontFamily="@font/exo_2_medium"
-            android:textColor="@android:color/black"
-            android:onClick = "showDurationEndBtnClicked"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"/>
-    <TextView
-            android:text="Потребление за все время"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/durationUseLbl"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp"
-            android:textColor="@android:color/holo_green_dark"
-            app:layout_constraintStart_toStartOf="@+id/beginDurationLbl"
-            app:layout_constraintTop_toBottomOf="@+id/beginDurationLbl"/>
-    <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp" app:srcCompat="@android:color/transparent"
-            android:id="@+id/imageView"
-            app:layout_constraintStart_toStartOf="@+id/imageView7"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/showDurationBtn"
-            app:layout_constraintEnd_toStartOf="@+id/imageView8" android:background="@drawable/rounded_shape"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
-    <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp" app:srcCompat="@android:color/transparent"
-            android:id="@+id/imageView8"
-            app:layout_constraintTop_toTopOf="@+id/imageView" app:layout_constraintStart_toEndOf="@+id/imageView"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/imageView9" android:background="@drawable/rounded_shape"/>
-    <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp" app:srcCompat="@android:color/transparent"
-            android:id="@+id/imageView9"
-            app:layout_constraintTop_toTopOf="@+id/imageView" app:layout_constraintStart_toEndOf="@+id/imageView8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="@+id/showDurationBtn" android:background="@drawable/rounded_shape"
-    />
-    <TextView
-            android:text="14,12 кВт*ч"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/allUseLbl" android:fontFamily="@font/exo_2_medium"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/imageView9" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView9" app:layout_constraintEnd_toEndOf="@+id/imageView9"/>
-    <TextView
-            android:text="всего"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/allSmallLbl" android:fontFamily="@font/exo_2_medium"
-            android:textSize="12sp" android:textAlignment="textEnd"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/allUseLbl"
-            app:layout_constraintEnd_toEndOf="@+id/allUseLbl"/>
-    <TextView
-            android:text="14,12 кВт*ч"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/dayUseLbl" android:fontFamily="@font/exo_2_medium"
-            app:layout_constraintStart_toStartOf="@+id/imageView" app:layout_constraintEnd_toEndOf="@+id/imageView"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="@+id/imageView"
-            android:layout_marginStart="8dp" android:layout_marginEnd="8dp" android:textColor="@android:color/black"/>
-    <TextView
-            android:text="14,12 кВт*ч"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nightUseLbl" android:fontFamily="@font/exo_2_medium"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView8"
-            app:layout_constraintStart_toStartOf="@+id/imageView8" app:layout_constraintEnd_toEndOf="@+id/imageView8"/>
-    <TextView
-            android:text="день"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/daySmallLbl" android:fontFamily="@font/exo_2_medium"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/dayUseLbl"
-            android:textSize="12sp" app:layout_constraintEnd_toEndOf="@+id/dayUseLbl" android:textAlignment="textEnd"
-            android:textColor="@android:color/black"/>
-    <TextView
-            android:text="ночь"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/nightSmalLbl" android:fontFamily="@font/exo_2_medium"
-            android:textSize="12sp" android:textAlignment="textEnd"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/nightUseLbl"
-            app:layout_constraintEnd_toEndOf="@+id/nightUseLbl"/>
-    <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp" app:srcCompat="@color/colorBgTable"
-            android:id="@+id/imageView11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:srcCompat="@color/colorSelect" />
+
+    <TextView
+            android:id="@+id/showUseLbl2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Дата | Время"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+            app:layout_constraintEnd_toStartOf="@+id/showUseLbl3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+    <TextView
+            android:id="@+id/showUseLbl3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Фаза"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2"
+            app:layout_constraintEnd_toStartOf="@+id/showUseLbl4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/showUseLbl2"
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+    <TextView
+            android:id="@+id/showUseLbl4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Ток(А)"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2"
+            app:layout_constraintEnd_toStartOf="@+id/showUseLbl5"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/showUseLbl3"
+            app:layout_constraintTop_toTopOf="@+id/imageView10"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+            android:id="@+id/showUseLbl5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Мощность(Вт)"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2"
+            app:layout_constraintEnd_toStartOf="@+id/showUseLbl6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/showUseLbl4"
+            app:layout_constraintTop_toTopOf="@+id/imageView10"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+            android:id="@+id/showUseLbl6"
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Напряжение(В)"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/showUseLbl2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/showUseLbl5"
+            app:layout_constraintTop_toTopOf="@+id/imageView10"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+            android:id="@+id/deviceImage"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/shetico" />
+
+    <TextView
+            android:id="@+id/deviceLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Счётчик (ЭЭ)"
+            app:layout_constraintStart_toEndOf="@+id/deviceImage"
+            app:layout_constraintTop_toTopOf="@+id/deviceImage" />
+
+    <TextView
+            android:id="@+id/idLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="ID: 114 |"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/deviceLbl"
+            app:layout_constraintTop_toBottomOf="@+id/deviceLbl" />
+
+    <TextView
+            android:id="@+id/lastActLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Последняя активность: 2018-12-25 16:24:37"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/deviceImage"
+            app:layout_constraintStart_toStartOf="@+id/idLbl"
+            app:layout_constraintTop_toBottomOf="@+id/idLbl" />
+
+    <TextView
+            android:id="@+id/serialLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Серийный номер: 4073962"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/idLbl"
+            app:layout_constraintTop_toBottomOf="@+id/deviceLbl" />
+
+    <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="235dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastActLbl"
+            app:srcCompat="@color/colorSelect" />
+
+    <TextView
+            android:id="@+id/showUseLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Показать потребление за период:"
+            android:textColor="@android:color/white"
+            app:autoSizeMinTextSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="@+id/imageView6"
+            app:layout_constraintHorizontal_bias="0.666"
+            app:layout_constraintStart_toStartOf="@+id/imageView6"
+            app:layout_constraintTop_toTopOf="@+id/imageView6"
+            app:layout_constraintVertical_bias="0.636" />
+
+    <Button
+            android:id="@+id/resetDurationBtn"
+            style="@style/AppTheme.RoundedCornerMaterialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="resetDurationBtnClicked"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Сбросить период"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+    <Button
+            android:id="@+id/showDurationBtn"
+            style="@style/AppTheme.RoundedCornerMaterialButton2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationBtnClicked"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Показать"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/resetDurationBtn"
+            app:layout_constraintStart_toStartOf="@+id/resetDurationBtn"
+            app:layout_constraintTop_toBottomOf="@+id/resetDurationBtn" />
+
+    <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6"
+            app:srcCompat="@drawable/calendar" />
+
+    <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Начало:"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Конец:"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/beginDurationLbl"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <TextView
+            android:id="@+id/beginDurationLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationStartBtnClicked"
+            android:text="01 янв. 2019"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+            android:id="@+id/endDurationLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationEndBtnClicked"
+            android:text="01 янв. 2019"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+            android:id="@+id/durationUseLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Потребление за все время"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/beginDurationLbl"
+            app:layout_constraintTop_toBottomOf="@+id/beginDurationLbl" />
+
+    <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_shape"
+            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@+id/imageView7"
+            app:layout_constraintTop_toBottomOf="@+id/showDurationBtn"
+            app:srcCompat="@android:color/transparent" />
+
+    <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/rounded_shape"
+            app:layout_constraintEnd_toStartOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:srcCompat="@android:color/transparent" />
+
+    <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/rounded_shape"
+            app:layout_constraintEnd_toEndOf="@+id/showDurationBtn"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            app:srcCompat="@android:color/transparent" />
+
+    <TextView
+            android:id="@+id/allUseLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="14,12 кВт*ч"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintStart_toStartOf="@+id/imageView9"
+            app:layout_constraintTop_toTopOf="@+id/imageView9" />
+
+    <TextView
+            android:id="@+id/allSmallLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="всего"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/allUseLbl"
+            app:layout_constraintTop_toBottomOf="@+id/allUseLbl" />
+
+    <TextView
+            android:id="@+id/dayUseLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="14,12 кВт*ч"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <TextView
+            android:id="@+id/nightUseLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="14,12 кВт*ч"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/imageView8"
+            app:layout_constraintStart_toStartOf="@+id/imageView8"
+            app:layout_constraintTop_toTopOf="@+id/imageView8" />
+
+    <TextView
+            android:id="@+id/daySmallLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="день"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/dayUseLbl"
+            app:layout_constraintTop_toBottomOf="@+id/dayUseLbl" />
+
+    <TextView
+            android:id="@+id/nightSmalLbl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="5dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="ночь"
+            android:textAlignment="textEnd"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:autoSizeMinTextSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/nightUseLbl"
+            app:layout_constraintTop_toBottomOf="@+id/nightUseLbl" />
+
+    <ImageView
+            android:id="@+id/imageView11"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView10"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView10"
+            app:srcCompat="@color/colorBgTable" />
+
     <TextView
+            android:id="@+id/naprNumTxt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/naprNumTxt2" tools:text="2"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl6"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl6" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/naprNumTxt"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/naprNumTxt3" tools:text="3"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl6"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/showUseLbl6"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/naprNumTxt2"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mochNumTxt" tools:text="1"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="@+id/dateTblTxt"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/naprNumTxt" tools:text="1"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="@+id/dateTblTxt"
             app:layout_constraintStart_toStartOf="@+id/showUseLbl6"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl6"/>
+            app:layout_constraintTop_toBottomOf="@+id/naprNumTxt"
+            tools:text="2" />
+
     <TextView
+            android:id="@+id/naprNumTxt3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/mochNumTxt2" tools:text="2"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/mochNumTxt" android:text="2"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/mochNumTxt3" tools:text="3"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/mochNumTxt2"/>
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl6"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl6"
+            app:layout_constraintTop_toBottomOf="@+id/naprNumTxt2"
+            tools:text="3" />
+
     <TextView
+            android:id="@+id/mochNumTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/amperNumTxt" tools:text="1"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
             app:layout_constraintTop_toTopOf="@+id/dateTblTxt"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl4"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl4"/>
+            tools:text="1" />
+
     <TextView
+            android:id="@+id/naprNumTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/amperNumTxt2" tools:text="2"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl6"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl6"
+            app:layout_constraintTop_toTopOf="@+id/dateTblTxt"
+            tools:text="1" />
+
+    <TextView
+            android:id="@+id/mochNumTxt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="2"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
+            app:layout_constraintTop_toBottomOf="@+id/mochNumTxt"
+            tools:text="2" />
+
+    <TextView
+            android:id="@+id/mochNumTxt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl5"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl5"
+            app:layout_constraintTop_toBottomOf="@+id/mochNumTxt2"
+            tools:text="3" />
+
+    <TextView
+            android:id="@+id/amperNumTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl4"
             app:layout_constraintStart_toStartOf="@+id/showUseLbl4"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl4" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/amperNumTxt"/>
+            app:layout_constraintTop_toTopOf="@+id/dateTblTxt"
+            tools:text="1" />
+
     <TextView
+            android:id="@+id/amperNumTxt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/amperNumTxt3" tools:text="3"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/showUseLbl4"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl4" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/amperNumTxt2"/>
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl4"
+            app:layout_constraintTop_toBottomOf="@+id/amperNumTxt"
+            tools:text="2" />
+
     <TextView
+            android:id="@+id/amperNumTxt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl4"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl4"
+            app:layout_constraintTop_toBottomOf="@+id/amperNumTxt2"
+            tools:text="3" />
+
+    <TextView
+            android:id="@+id/dateTblTxt"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:id="@+id/dateTblTxt" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="@+id/imageView11" tools:text="2018-12-25 16:24:37"
-            android:textSize="10sp" android:fontFamily="@font/exo_2_medium" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl2"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl2"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/phaseNumTxt"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintTop_toTopOf="@+id/dateTblTxt" app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3" android:text="1"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/phaseNumTxt2"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/phaseNumTxt" android:text="2"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/phaseNumTxt3"
-            android:fontFamily="@font/exo_2_medium" android:textSize="10sp" android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
-            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/phaseNumTxt2" android:text="3"/>
+            android:fontFamily="@font/exo_2_medium"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl2"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl2"
+            app:layout_constraintTop_toTopOf="@+id/imageView11"
+            tools:text="2018-12-25 16:24:37" />
+
+    <TextView
+            android:id="@+id/phaseNumTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="1"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
+            app:layout_constraintTop_toTopOf="@+id/dateTblTxt" />
+
+    <TextView
+            android:id="@+id/phaseNumTxt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="2"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
+            app:layout_constraintTop_toBottomOf="@+id/phaseNumTxt" />
+
+    <TextView
+            android:id="@+id/phaseNumTxt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="3"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLbl3"
+            app:layout_constraintStart_toStartOf="@+id/showUseLbl3"
+            app:layout_constraintTop_toBottomOf="@+id/phaseNumTxt2" />
 </android.support.constraint.ConstraintLayout>
