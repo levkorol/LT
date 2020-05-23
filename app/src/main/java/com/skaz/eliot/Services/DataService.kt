@@ -90,7 +90,7 @@ object DataService {
                             val data = deviceNum.getJSONObject("last_data")
                             deviceDate = data.getString("deviceData")
                             pw_1 = data.getDouble("pw_1")
-                            pw_2 = data.getDouble("pw_2")
+                            pw_2 = data.getDouble("pw_2") 
                             pw_3 = data.getDouble("pw_3")
                             amper_1 = data.getDouble("amper_1")
                             amper_2 = data.getDouble("amper_2")
