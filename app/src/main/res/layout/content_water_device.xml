@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <ImageView
+            android:id="@+id/deviceImageWater"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/drop" />
+
+    <TextView
+            android:id="@+id/deviceLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Счётчик воды одноструйный - Пульсар"
+            app:layout_constraintStart_toEndOf="@+id/deviceImageWater"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+            android:id="@+id/idLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="ID: 10 |"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/deviceImageWater"
+            app:layout_constraintTop_toTopOf="@+id/serialLblWater" />
+
+    <TextView
+            android:id="@+id/lastActLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Последняя активность: 2018-12-25 16:24:37"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/deviceImageWater"
+            app:layout_constraintTop_toBottomOf="@+id/serialLblWater" />
+
+    <TextView
+            android:id="@+id/lastActLbWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Показания от: 2018-12-25 16:24:37"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/lastActLblWater"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/deviceImageWater"
+            app:layout_constraintTop_toTopOf="@+id/lastActLblWater" />
+
+    <TextView
+            android:id="@+id/serialLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Серийный номер: 2442532"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/idLblWater"
+            app:layout_constraintTop_toBottomOf="@+id/deviceLblWater" />
+
+    <ImageView
+            android:id="@+id/imageView6Water"
+            android:layout_width="245dp"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="@+id/showUseLblWater"
+            app:layout_constraintEnd_toEndOf="@+id/showUseLblWater"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@color/colorSelect" />
+
+    <TextView
+            android:id="@+id/showUseLblWater"
+            android:layout_width="247dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Показать потребление за период:"
+            android:textColor="@android:color/white"
+            app:autoSizeMinTextSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastActLbWater" />
+
+    <Button
+            android:id="@+id/resetDurationBtnWater"
+            style="@style/AppTheme.RoundedCornerMaterialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="88dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="resetDurationBtnClicked"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Сбросить период"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.687"
+            app:layout_constraintStart_toEndOf="@+id/showUseLblWater"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+            android:id="@+id/showDurationBtnWater"
+            style="@style/AppTheme.RoundedCornerMaterialButton2"
+            android:layout_width="104dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationBtnClicked"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Показать"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.819"
+            app:layout_constraintStart_toEndOf="@+id/endDurationLblWater"
+            app:layout_constraintTop_toBottomOf="@+id/resetDurationBtnWater" />
+
+    <ImageView
+            android:id="@+id/imageView7Water"
+            android:layout_width="9dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6Water"
+            app:srcCompat="@drawable/calendar" />
+
+    <TextView
+            android:id="@+id/textView2Water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Начало:"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView7Water"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6Water" />
+
+    <TextView
+            android:id="@+id/textView4Water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="68dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Конец:"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/textView2Water"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6Water" />
+
+    <TextView
+            android:id="@+id/beginDurationLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationStartBtnClicked"
+            android:text="01 янв. 2019"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2Water" />
+
+    <TextView
+            android:id="@+id/endDurationLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:onClick="showDurationEndBtnClicked"
+            android:text="01 янв. 2019"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toEndOf="@+id/beginDurationLblWater"
+            app:layout_constraintTop_toBottomOf="@+id/imageView6Water" />
+
+    <TextView
+            android:id="@+id/durationUseLblWater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:fontFamily="@font/exo_2_medium"
+            android:text="Потребление за все время"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/beginDurationLblWater" />
+
+    <TextView
+            android:id="@+id/textView3Water"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.096 M"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:padding="16dp"
+            android:background="@color/colorBgTable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/durationUseLblWater"
+            app:layout_constraintVertical_bias="0.027" />
+
+
+</android.support.constraint.ConstraintLayout>
