@@ -14,4 +14,4 @@ data class DeviceAllData(
     var cur: Double,
     var notice: String,
     var error: String
-)
+) : Base()

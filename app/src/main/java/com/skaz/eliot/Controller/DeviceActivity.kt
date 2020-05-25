@@ -47,6 +47,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     var yearEnd = endCal.get(Calendar.YEAR)
     var monthEnd = endCal.get(Calendar.MONTH)
     var dayEnd = endCal.get(Calendar.DAY_OF_MONTH)
+    lateinit var adapter: DevicesRecycleAdapter
 
     private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
 
@@ -55,22 +56,21 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         setContentView(R.layout.activity_device)
         //   setSupportActionBar(toolbar)
 
-        lateinit var adapter: DevicesRecycleAdapter
-
         adapter = DevicesRecycleAdapter(
             this,
             DataService.devices,
-            DataService.deviceInfoArray,
-            DataService.deviceAccTariff,
+            deviceInfoArray,
+            deviceAccTariff,
             DataService.deviceAllData
         )
 
+        refreshDataAdapter()
+       
         devicesListView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
         devicesListView.setHasFixedSize(true)
-
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -111,6 +111,23 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     mSwipe.isRefreshing = false
                     Log.d("ERROR", "${App.prefs.authToken}")
                 }
+            }
+        }
+    }
+
+    private fun refreshDataAdapter() {
+        DataService.deviceRequest(App.prefs.authToken) { complete ->
+            if (complete) {
+               // mSwipe.isRefreshing = false
+                adapter = DevicesRecycleAdapter(
+                    this,
+                    DataService.devices,
+                    deviceInfoArray,
+                    deviceAccTariff,
+                    DataService.deviceAllData
+                )
+               devicesListView.adapter = adapter
+                Log.d("REFRESH", "Refreshed")
             }
         }
     }

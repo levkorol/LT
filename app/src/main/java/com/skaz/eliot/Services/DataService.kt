@@ -123,7 +123,7 @@ object DataService {
 //                            ""
                         )
 
-                        this.devices.clear()
+                    //    this.devices.clear()
                         this.devices.add(newDevice)
 
                     }
