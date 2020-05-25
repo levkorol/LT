@@ -32,7 +32,9 @@ import com.skaz.eliot.Services.DataService.deviceSelectData
 import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
 import android.widget.DatePicker
+import com.skaz.eliot.Services.DataService.deviceInfoArray
 
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -64,11 +66,11 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         )
 
         devicesListView.adapter = adapter
-        adapter.notifyDataSetChanged()
 
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
         devicesListView.setHasFixedSize(true)
+
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -99,8 +101,8 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     adapter = DevicesRecycleAdapter(
                         this,
                         DataService.devices,
-                        DataService.deviceInfoArray,
-                        DataService.deviceAccTariff,
+                        deviceInfoArray,
+                        deviceAccTariff,
                         DataService.deviceAllData
                     )
                     devicesListView.adapter = adapter
@@ -128,9 +130,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)

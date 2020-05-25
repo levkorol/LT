@@ -32,39 +32,34 @@ object DataService {
 
     fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
 
-//        val gson = Gson()
 //
-//        var deviceInfo = gson.toJson(deviceInfoArray)
+//        val deviceInf = DeviceInfo(last_act = "", serial = "", type = "")
 //
-//        var js = Gson().fromJson(deviceInfo, Device::class.java)
+//        val deviceData = DeviceAllData(
+//            deviceDate = "",
+//            pw_1 = 0.0,
+//            pw_2 = 0.0,
+//            pw_3 = 0.0,
+//            amper_1 = 0.0,
+//            amper_2 = 0.0,
+//            amper_3 = 0.0,
+//            volt_1 = 0.0,
+//            volt_2 = 0.0,
+//            volt_3 = 0.0,
+//            cur = 0.0,
+//            notice = "",
+//            error = ""
+//        )
 //
-        val deviceInf = DeviceInfo(last_act = "", serial = "", type = "")
-
-        val deviceData = DeviceAllData(
-            deviceDate = "",
-            pw_1 = 0.0,
-            pw_2 = 0.0,
-            pw_3 = 0.0,
-            amper_1 = 0.0,
-            amper_2 = 0.0,
-            amper_3 = 0.0,
-            volt_1 = 0.0,
-            volt_2 = 0.0,
-            volt_3 = 0.0,
-            cur = 0.0,
-            notice = "",
-            error = ""
-        )
-
-        val deviceTariff = DeviceTariff(
-            t1 = 0.0,
-            t2 = 0.0,
-            t1_date = "",
-            t2_date = "",
-            notice = "",
-            error = "",
-            access = false
-        )
+//        val deviceTariff = DeviceTariff(
+//            t1 = 0.0,
+//            t2 = 0.0,
+//            t1_date = "",
+//            t2_date = "",
+//            notice = "",
+//            error = "",
+//            access = false
+//        )
 
         val jsonBody = JSONObject()
         jsonBody.put("session", session)
@@ -78,71 +73,59 @@ object DataService {
                         val deviceNum = response.getJSONObject(x)
                         val id = deviceNum.getInt("id")
                         val type_id = deviceNum.getInt("type_id")
-                        var type = deviceNum.getString("type")
+                        val type = deviceNum.getString("type")
                         val category = deviceNum.getString("category")
-                        with(deviceInf) {
-                            val deviceInfo = deviceNum.getJSONObject("device_info")
-                            last_act = deviceInfo.getString("last_act")
-                            serial = deviceInfo.getString("serial")
-                            type = deviceInfo.getString("type")
-                        }
-                        with(deviceData) {
-                            val data = deviceNum.getJSONObject("last_data")
-                            deviceDate = data.getString("deviceData")
-                            pw_1 = data.getDouble("pw_1")
-                            pw_2 = data.getDouble("pw_2") 
-                            pw_3 = data.getDouble("pw_3")
-                            amper_1 = data.getDouble("amper_1")
-                            amper_2 = data.getDouble("amper_2")
-                            amper_3 = data.getDouble("amper_2")
-                            volt_1 = data.getDouble("volt_1")
-                            volt_2 = data.getDouble("volt_2")
-                            volt_3 = data.getDouble("volt_3")
-                            cur = data.getDouble("cur")
-                            notice = data.getString("notice")
-                            error = data.getString("error")
-                        }
+//                        with(deviceInf) {
+//                            val deviceInfo = deviceNum.getJSONObject("device_info")
+//                            last_act = deviceInfo.getString("last_act")
+//                            serial = deviceInfo.getString("serial")
+//                            type = deviceInfo.getString("type")
+//                        }
+//                        with(deviceData) {
+//                            val data = deviceNum.getJSONObject("last_data")
+//                            deviceDate = data.getString("deviceData")
+//                            pw_1 = data.getDouble("pw_1")
+//                            pw_2 = data.getDouble("pw_2")
+//                            pw_3 = data.getDouble("pw_3")
+//                            amper_1 = data.getDouble("amper_1")
+//                            amper_2 = data.getDouble("amper_2")
+//                            amper_3 = data.getDouble("amper_2")
+//                            volt_1 = data.getDouble("volt_1")
+//                            volt_2 = data.getDouble("volt_2")
+//                            volt_3 = data.getDouble("volt_3")
+//                            cur = data.getDouble("cur")
+//                            notice = data.getString("notice")
+//                            error = data.getString("error")
+//                        }
+//
+//                        with(deviceTariff) {
+//                            val devTar = deviceNum.getJSONObject("accumulated_en")
+//                            t1 = devTar.getDouble("t1")
+//                            t2 = devTar.getDouble("t2")
+//                            t1_date = devTar.getString("t1_date")
+//                            t2_date = devTar.getString("t2_date")
+//                            notice = devTar.getString("notice")
+//                            error = devTar.getString("error")
+//                            access = devTar.getBoolean("access")
+//                        }
 
-                        with(deviceTariff) {
-                            val devTar = deviceNum.getJSONObject("accumulated_en")
-                            t1 = devTar.getDouble("t1")
-                            t2 = devTar.getDouble("t2")
-                            t1_date = devTar.getString("t1_date")
-                            t2_date = devTar.getString("t2_date")
-                            notice = devTar.getString("notice")
-                            error = devTar.getString("error")
-                            access = devTar.getBoolean("access")
-                        }
-                        //  val deviceTariff = deviceNum.getJSONArray("accumulated_en")
 
                         val newDevice = Device(
                             id,
                             type_id,
                             type,
-                            category,
-                            deviceInf,
-                            deviceData,
-                            deviceTariff,
-                            false,
-                            "",
-                            ""
+                            category
+//                            deviceInf,
+//                            deviceData,
+//                            deviceTariff,
+//                            false,
+//                            "",
+//                            ""
                         )
 
                         this.devices.clear()
                         this.devices.add(newDevice)
 
-                        deviceInfoRequest(session, id.toString()) { completed ->
-
-                        }
-
-                        deviceTariffRequest(session, id.toString()) { completed2 ->
-
-
-                        }
-
-                        deviceGetData(session, id.toString()) { completed ->
-
-                        }
                     }
 
                     complete(true)
@@ -169,11 +152,9 @@ object DataService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
-                headers.put("X-Platform", "ANDROID")
+                headers.put("X-Platform", "Android")
                 return headers
             }
-
-
         }
 
         App.prefs.requestQueue.add(devicesRequest)
@@ -224,7 +205,7 @@ object DataService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
-                headers.put("X-Platform", "ANDROID")
+                headers.put("X-Platform", "Android")
                 return headers
             }
 
@@ -381,6 +362,7 @@ object DataService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
+                headers.put("X-Platform", "Android")
                 return headers
             }
 
@@ -453,7 +435,7 @@ object DataService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
-                headers.put("X-Platform", "ANDROID")
+                headers.put("X-Platform", "Android")
                 return headers
             }
 
@@ -537,7 +519,7 @@ object DataService {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
                 headers.put("Accept", "application/json; version=1")
-                headers.put("X-Platform", "ANDROID")
+                headers.put("X-Platform", "Android")
                 return headers
             }
         }

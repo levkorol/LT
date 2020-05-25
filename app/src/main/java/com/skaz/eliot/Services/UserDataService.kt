@@ -19,7 +19,6 @@ object UserDataService {
 
     }
 
-
     var startDate = ""
     var endDate = ""
     var defaultBeginDate = "01 янв. 2019"

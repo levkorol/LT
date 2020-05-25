@@ -31,3 +31,4 @@ class SharedPrefs(context: Context) {
     val requestQueue: RequestQueue = Volley.newRequestQueue(context)
 
 }
+
