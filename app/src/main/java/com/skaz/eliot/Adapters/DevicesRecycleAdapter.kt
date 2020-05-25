@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.DeviceAllData
@@ -77,8 +78,18 @@ class DevicesRecycleAdapter(
         val tokLabel = itemView.findViewById<TextView>(R.id.showUseLbl4)
         val mochLabel = itemView.findViewById<TextView>(R.id.showUseLbl5)
         val naprLabel = itemView.findViewById<TextView>(R.id.showUseLbl6)
-        val constraintLayoutElectrical = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutElectrical)
-        val constraintLayoutWater = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutWater)
+        val constraintLayoutElectrical =
+            itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutElectrical)
+        val constraintLayoutWater =
+            itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutWater)
+
+        val deviceTitleWater = itemView.findViewById<TextView>(R.id.deviceLblWater)
+        val deviceIdWater = itemView.findViewById<TextView>(R.id.idLblWater)
+        val deviceSerialWater = itemView.findViewById<TextView>(R.id.serialLblWater)
+        val deviceLastActWater = itemView.findViewById<TextView>(R.id.lastActLblWater)
+        val defaultStartDateWater = itemView.findViewById<TextView>(R.id.beginDurationLblWater)
+        val defaultEndDateWater = itemView.findViewById<TextView>(R.id.endDurationLblWater)
+        val icWater = itemView.findViewById<ImageView>(R.id.deviceImageWater)
 
         fun bindProduct(
             context: Context,
@@ -97,18 +108,32 @@ class DevicesRecycleAdapter(
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
             }
+
+            when {
+                device.type == "hot" -> icWater.setImageResource(R.drawable.red)
+                else -> icWater.setImageResource(R.drawable.drop)
+            }
+            
+            deviceTitleWater.text = device.type
+            deviceIdWater.text = "ID: ${device.id} |"
+            deviceSerialWater.text =
+                " Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
+            deviceLastActWater.text =
+                "Последняя активность: ${if (deviceInfo.size > position) deviceInfo[position].last_act else ""}"
+
+
             deviceTitle.text = device.type
             deviceId.text = "ID: ${device.id} |"
             deviceSerial.text =
-                "  Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
+                " Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
             deviceLastAct.text =
                 "Последняя активность: ${if (deviceInfo.size > position) deviceInfo[position].last_act else ""}"
             dayUseLbl.text =
                 "${if (deviceTariff.size > position) deviceTariff[position].t1 else ""} кВт*ч"
             nightUseLbl.text =
                 "${if (deviceTariff.size > position) deviceTariff[position].t2 else ""} кВт*ч"
-//            allUseLbl.text =
-//                "${if (deviceTariff.size > position) deviceTariff[position].t3 else ""} кВт*ч" //Todo summa klvt
+            allUseLbl.text =
+                "${if (deviceTariff.size > position) deviceTariff[position].t1 + deviceTariff[position].t2 else ""} кВт*ч" //Todo summa klvt
             if (deviceAllData.size > position) {
                 dateLbl.text = deviceAllData[position].deviceDate
                 pw_1.text = deviceAllData[position].pw_1.toString()
@@ -143,7 +168,8 @@ class DevicesRecycleAdapter(
                 mochLabel.text = ""
                 naprLabel.text = ""
             }
-
+            defaultStartDateWater.text = UserDataService.defaultBeginDate
+            defaultEndDateWater.text = UserDataService.defaultEndDate
             defaultStartDate.text = UserDataService.defaultBeginDate
             defaultEndDate.text = UserDataService.defaultEndDate
         }
