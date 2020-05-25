@@ -69,6 +69,7 @@ object DataService {
             JsonArrayRequest(Method.POST, URL_DEVICES, null, Response.Listener { response ->
 
                 try {
+                    this.devices.clear()
                     for (x in 0 until response.length()) {
                         val deviceNum = response.getJSONObject(x)
                         val id = deviceNum.getInt("id")
@@ -123,7 +124,6 @@ object DataService {
 //                            ""
                         )
 
-                    //    this.devices.clear()
                         this.devices.add(newDevice)
 
                     }
@@ -148,6 +148,7 @@ object DataService {
             override fun getBody(): ByteArray {
                 return requestBody.toByteArray()
             }
+
 
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()

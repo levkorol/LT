@@ -1,6 +1,7 @@
 package com.skaz.eliot.Adapters
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -76,6 +77,8 @@ class DevicesRecycleAdapter(
         val tokLabel = itemView.findViewById<TextView>(R.id.showUseLbl4)
         val mochLabel = itemView.findViewById<TextView>(R.id.showUseLbl5)
         val naprLabel = itemView.findViewById<TextView>(R.id.showUseLbl6)
+        val constraintLayoutElectrical = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutElectrical)
+        val constraintLayoutWater = itemView.findViewById<ConstraintLayout>(R.id.constraintLayoutWater)
 
         fun bindProduct(
             context: Context,
@@ -87,7 +90,13 @@ class DevicesRecycleAdapter(
         ) {
             // val resourceId = context.resources.getIdentifier(product.image, "drawable", context.packageName)
             // productImage.setImageResource(resourceId)
-
+            if (device.category == "ee") {
+                constraintLayoutElectrical.visibility = View.VISIBLE
+                constraintLayoutWater.visibility = View.GONE
+            } else if (device.category == "water") {
+                constraintLayoutElectrical.visibility = View.GONE
+                constraintLayoutWater.visibility = View.VISIBLE
+            }
             deviceTitle.text = device.type
             deviceId.text = "ID: ${device.id} |"
             deviceSerial.text =

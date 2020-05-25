@@ -65,7 +65,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         )
 
         refreshDataAdapter()
-       
+
         devicesListView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(this)
@@ -115,22 +115,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
     }
 
-    private fun refreshDataAdapter() {
-        DataService.deviceRequest(App.prefs.authToken) { complete ->
-            if (complete) {
-               // mSwipe.isRefreshing = false
-                adapter = DevicesRecycleAdapter(
-                    this,
-                    DataService.devices,
-                    deviceInfoArray,
-                    deviceAccTariff,
-                    DataService.deviceAllData
-                )
-               devicesListView.adapter = adapter
-                Log.d("REFRESH", "Refreshed")
-            }
-        }
-    }
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -292,6 +277,23 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         override fun onReceive(context: Context, intent: Intent?) {
             if (App.prefs.isLoggedIn) {
                 nameLbl.text = UserDataService.fio
+            }
+        }
+    }
+
+    private fun refreshDataAdapter() {
+        DataService.deviceRequest(App.prefs.authToken) { complete ->
+            if (complete) {
+                // mSwipe.isRefreshing = false
+                adapter = DevicesRecycleAdapter(
+                    this,
+                    DataService.devices,
+                    deviceInfoArray,
+                    deviceAccTariff,
+                    DataService.deviceAllData
+                )
+                devicesListView.adapter = adapter
+                Log.d("REFRESH", "Refreshed")
             }
         }
     }

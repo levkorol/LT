@@ -12,14 +12,10 @@ import com.skaz.eliot.R
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.skaz.eliot.Model.Device
-import com.skaz.eliot.Model.DeviceInfo
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
-import com.skaz.eliot.Utilities.BROADCAST_USER_DATA_CHANGE
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.nav_header_main.*
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
-        var month = c.get(Calendar.MONTH)
+        val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
 
@@ -98,8 +94,6 @@ class MainActivity : AppCompatActivity() {
 
     fun spinnerStop() {
         Thread(Runnable {
-            // performing some dummy time taking operation
-            // try to touch View of UI thread
             this@MainActivity.runOnUiThread {
                 enableSpinner(false)
             }
