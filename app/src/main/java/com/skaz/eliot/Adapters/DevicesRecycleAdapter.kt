@@ -90,6 +90,7 @@ class DevicesRecycleAdapter(
         val defaultStartDateWater = itemView.findViewById<TextView>(R.id.beginDurationLblWater)
         val defaultEndDateWater = itemView.findViewById<TextView>(R.id.endDurationLblWater)
         val icWater = itemView.findViewById<ImageView>(R.id.deviceImageWater)
+        val cur = itemView.findViewById<TextView>(R.id.textView3Water)
 
         fun bindProduct(
             context: Context,
@@ -113,13 +114,14 @@ class DevicesRecycleAdapter(
                 device.type == "hot" -> icWater.setImageResource(R.drawable.red)
                 else -> icWater.setImageResource(R.drawable.drop)
             }
-            
+
             deviceTitleWater.text = device.type
             deviceIdWater.text = "ID: ${device.id} |"
             deviceSerialWater.text =
                 " Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
             deviceLastActWater.text =
                 "Последняя активность: ${if (deviceInfo.size > position) deviceInfo[position].last_act else ""}"
+            cur.text = "${deviceAllData[position].cur} М³"
 
 
             deviceTitle.text = device.type
