@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.DeviceAllData
-import com.skaz.eliot.Model.DeviceInfo
 import com.skaz.eliot.Model.DeviceTariff
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.UserDataService
@@ -19,7 +18,6 @@ import com.skaz.eliot.Services.UserDataService
 class DevicesRecycleAdapter(
     val context: Context,
     val devices: List<Device>,
-    val devicesInfo: List<DeviceInfo>,
     val deviceTariffs: List<DeviceTariff>,
     val deviceAllData: List<DeviceAllData>
 ) : RecyclerView.Adapter<DevicesRecycleAdapter.Holder>() {
@@ -40,7 +38,6 @@ class DevicesRecycleAdapter(
         holder.bindProduct(
             context,
             devices[position],
-            devicesInfo,
             deviceTariffs,
             deviceAllData,
             position
@@ -96,7 +93,6 @@ class DevicesRecycleAdapter(
         fun bindProduct(
             context: Context,
             device: Device,
-            deviceInfo: List<DeviceInfo>,
             deviceTariff: List<DeviceTariff>,
             deviceAllData: List<DeviceAllData>,
             position: Int
@@ -109,33 +105,35 @@ class DevicesRecycleAdapter(
             } else if (device.category == "water") {
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
+
+                if (device.deviceInfo.isNotEmpty()) {
+                    when {
+                        device.deviceInfo[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
+                        else -> icWater.setImageResource(R.drawable.drop)
+                    }
+                    deviceTitleWater.text = device.type
+                    deviceIdWater.text = "ID: ${device.id} |"
+                    deviceSerialWater.text = " Серийный номер: ${device.deviceInfo[0].serial}"
+                    deviceLastActWater.text = "Последняя активность: ${device.deviceInfo[0].last_act}"
+                }
+
             }
 
-            when {
-                device.type == "hot" -> icWater.setImageResource(R.drawable.red)
-                else -> icWater.setImageResource(R.drawable.drop)
-            }
 
-            deviceTitleWater.text = device.type
-            deviceIdWater.text = "ID: ${device.id} |"
-            deviceSerialWater.text =
-                " Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
-            deviceLastActWater.text =
-                "Последняя активность: ${if (deviceInfo.size > position) deviceInfo[position].last_act else ""}"
-            if(deviceAllData.size > position) {
+            /*if(deviceAllData.size > position) {
                 cur.text = "${deviceAllData[position].cur} М³"
             } else {
                 cur.text = ""
-            }
+            }*/
 
 
 
             deviceTitle.text = device.type
             deviceId.text = "ID: ${device.id} |"
             deviceSerial.text =
-                " Серийный номер: ${if (deviceInfo.size > position) deviceInfo[position].serial else ""}"
+                " Серийный номер: ${if (device.deviceInfo.size > position) device.deviceInfo[position].serial else ""}"
             deviceLastAct.text =
-                "Последняя активность: ${if (deviceInfo.size > position) deviceInfo[position].last_act else ""}"
+                "Последняя активность: ${if (device.deviceInfo.size > position) device.deviceInfo[position].last_act else ""}"
             dayUseLbl.text =
                 "${if (deviceTariff.size > position) deviceTariff[position].t1 else ""} кВт*ч"
             nightUseLbl.text =

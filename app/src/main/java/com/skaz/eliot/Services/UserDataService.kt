@@ -15,8 +15,6 @@ object UserDataService {
         DataService.devices.clear()
         DataService.deviceAccTariff.clear()
         DataService.deviceAllData.clear()
-        DataService.deviceInfoArray.clear()
-
     }
 
     var startDate = ""
@@ -24,7 +22,7 @@ object UserDataService {
     var defaultBeginDate = "01 янв. 2019"
     var defaultEndDate = ""
 
-    var ruStartMonth = "" 
+    var ruStartMonth = ""
     var ruEndMonth = ""
 
     var defaultBeginDateSend = "2019-01-01"

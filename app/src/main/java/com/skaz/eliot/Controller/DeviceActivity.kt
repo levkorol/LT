@@ -32,10 +32,6 @@ import com.skaz.eliot.Services.DataService.deviceSelectData
 import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
-import android.widget.DatePicker
-import com.skaz.eliot.Services.DataService.deviceInfoArray
-
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,7 +55,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         adapter = DevicesRecycleAdapter(
             this,
             DataService.devices,
-            deviceInfoArray,
             deviceAccTariff,
             DataService.deviceAllData
         )
@@ -101,7 +96,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     adapter = DevicesRecycleAdapter(
                         this,
                         DataService.devices,
-                        deviceInfoArray,
                         deviceAccTariff,
                         DataService.deviceAllData
                     )
@@ -288,7 +282,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 adapter = DevicesRecycleAdapter(
                     this,
                     DataService.devices,
-                    deviceInfoArray,
                     deviceAccTariff,
                     DataService.deviceAllData
                 )

@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 object DataService {
 
     val devices = ArrayList<Device>()
-    val deviceInfoArray = ArrayList<DeviceInfo>()
+    //val deviceInfoArray = ArrayList<DeviceInfo>()
     val deviceAccTariff = ArrayList<DeviceTariff>()
     val deviceAllData = ArrayList<DeviceAllData>()
     val deviceSelectData = ArrayList<DeviceTariff>()
@@ -32,42 +32,12 @@ object DataService {
 
     fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
 
-//
-//        val deviceInf = DeviceInfo(last_act = "", serial = "", type = "")
-//
-//        val deviceData = DeviceAllData(
-//            deviceDate = "",
-//            pw_1 = 0.0,
-//            pw_2 = 0.0,
-//            pw_3 = 0.0,
-//            amper_1 = 0.0,
-//            amper_2 = 0.0,
-//            amper_3 = 0.0,
-//            volt_1 = 0.0,
-//            volt_2 = 0.0,
-//            volt_3 = 0.0,
-//            cur = 0.0,
-//            notice = "",
-//            error = ""
-//        )
-//
-//        val deviceTariff = DeviceTariff(
-//            t1 = 0.0,
-//            t2 = 0.0,
-//            t1_date = "",
-//            t2_date = "",
-//            notice = "",
-//            error = "",
-//            access = false
-//        )
-
         val jsonBody = JSONObject()
         jsonBody.put("session", session)
         val requestBody = jsonBody.toString()
 
         val devicesRequest = object :
             JsonArrayRequest(Method.POST, URL_DEVICES, null, Response.Listener { response ->
-
                 try {
                     this.devices.clear()
                     for (x in 0 until response.length()) {
@@ -76,47 +46,70 @@ object DataService {
                         val type_id = deviceNum.getInt("type_id")
                         val type = deviceNum.getString("type")
                         val category = deviceNum.getString("category")
-//                        with(deviceInf) {
-//                            val deviceInfo = deviceNum.getJSONObject("device_info")
-//                            last_act = deviceInfo.getString("last_act")
-//                            serial = deviceInfo.getString("serial")
-//                            type = deviceInfo.getString("type")
-//                        }
-//                        with(deviceData) {
-//                            val data = deviceNum.getJSONObject("last_data")
-//                            deviceDate = data.getString("deviceData")
-//                            pw_1 = data.getDouble("pw_1")
-//                            pw_2 = data.getDouble("pw_2")
-//                            pw_3 = data.getDouble("pw_3")
-//                            amper_1 = data.getDouble("amper_1")
-//                            amper_2 = data.getDouble("amper_2")
-//                            amper_3 = data.getDouble("amper_2")
-//                            volt_1 = data.getDouble("volt_1")
-//                            volt_2 = data.getDouble("volt_2")
-//                            volt_3 = data.getDouble("volt_3")
-//                            cur = data.getDouble("cur")
-//                            notice = data.getString("notice")
-//                            error = data.getString("error")
-//                        }
-//
-//                        with(deviceTariff) {
-//                            val devTar = deviceNum.getJSONObject("accumulated_en")
-//                            t1 = devTar.getDouble("t1")
-//                            t2 = devTar.getDouble("t2")
-//                            t1_date = devTar.getString("t1_date")
-//                            t2_date = devTar.getString("t2_date")
-//                            notice = devTar.getString("notice")
-//                            error = devTar.getString("error")
-//                            access = devTar.getBoolean("access")
-//                        }
+                        
+                        //info
+                        val device_info_json_array = deviceNum.getJSONArray("device_info")
+                        val device_info_list = mutableListOf<DeviceInfo>()
+                        for (device_info_num in 0 until device_info_json_array.length()) {
+                            val device_info_json =
+                                device_info_json_array.getJSONObject(device_info_num)
+                            val device_info_serial = device_info_json.getString("serial")
+                            val device_info_last_act = device_info_json.getString("last_act")
+                            var device_info_type: String? = null
+                            if (device_info_json.has("type")) {
+                                device_info_type = device_info_json.getString("type")
+                            }
+                            val device_info = DeviceInfo(
+                                device_info_serial,
+                                device_info_last_act,
+                                device_info_type
+                            )
+                            device_info_list.add(device_info)
+                        }
+
+                        //tariff
+                        val device_tariff_json_array = deviceNum.getJSONArray("accumulated_en")
+                        val device_tariff_list = mutableListOf<DeviceTariff>()
+                        for (device_tariff_num in 0 until device_tariff_json_array.length()) {
+                            val device_tariff_json =
+                                device_tariff_json_array.getJSONObject(device_tariff_num)
+                            val t1 = device_tariff_json.getDouble("t1")
+                            val t2 = device_tariff_json.getDouble("t2")
+                            val t1_date = device_tariff_json.getString("t1_date")
+                            val t2_date = device_tariff_json.getString("t2_date")
+                            val notice = device_tariff_json.getString("notice")
+                            val error = device_tariff_json.getString("error")
+                            val access = device_tariff_json.getBoolean("access")
+                        }
+
+                        //data
+                        val device_date_json_array = deviceNum.getJSONArray("last_data")
+                        val device_date_list = mutableListOf<DeviceAllData>()
+                        for (device_data_num in 0 until device_date_json_array.length()) {
+                            val device_data_json =
+                                device_date_json_array.getJSONObject(device_data_num)
+                            val deviceDate = device_data_json.getString("deviceData")
+                            val pw_1 = device_data_json.getDouble("pw_1")
+                            val pw_2 = device_data_json.getDouble("pw_2")
+                            val pw_3 = device_data_json.getDouble("pw_3")
+                            val amper_1 = device_data_json.getDouble("amper_1")
+                            val amper_2 = device_data_json.getDouble("amper_2")
+                            val amper_3 = device_data_json.getDouble("amper_2")
+                            val volt_1 = device_data_json.getDouble("volt_1")
+                            val volt_2 = device_data_json.getDouble("volt_2")
+                            val volt_3 = device_data_json.getDouble("volt_3")
+                            val cur = device_data_json.getDouble("cur")
+                            val notice = device_data_json.getString("notice")
+                            val error = device_data_json.getString("error")
+                        }
 
 
                         val newDevice = Device(
                             id,
                             type_id,
                             type,
-                            category
-//                            deviceInf,
+                            category,
+                            device_info_list
 //                            deviceData,
 //                            deviceTariff,
 //                            false,
@@ -125,7 +118,6 @@ object DataService {
                         )
 
                         this.devices.add(newDevice)
-
                     }
 
                     complete(true)
@@ -161,7 +153,7 @@ object DataService {
         App.prefs.requestQueue.add(devicesRequest)
     }
 
-    fun deviceInfoRequest(session: String, id: String, complete: (Boolean) -> Unit) {
+    /*fun deviceInfoRequest(session: String, id: String, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()
 
@@ -214,7 +206,7 @@ object DataService {
         }
 
         App.prefs.requestQueue.add(deviceInfoRequest)
-    }
+    }*/
 
     fun deviceGetData(session: String, id: String, complete: (Boolean) -> Unit) {
 
