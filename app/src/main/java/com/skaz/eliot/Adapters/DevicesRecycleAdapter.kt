@@ -12,14 +12,14 @@ import android.widget.TextView
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.DeviceAllData
 import com.skaz.eliot.Model.DeviceTariff
+import com.skaz.eliot.Model.DeviceWater
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.UserDataService
 
 class DevicesRecycleAdapter(
     val context: Context,
-    val devices: List<Device>,
-    val deviceTariffs: List<DeviceTariff>,
-    val deviceAllData: List<DeviceAllData>
+    private val devices: List<Device>
+  //  private val deviceWater: List<DeviceWater>
 ) : RecyclerView.Adapter<DevicesRecycleAdapter.Holder>() {
 
 
@@ -30,20 +30,14 @@ class DevicesRecycleAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.d("SDASDAD", "${deviceAllData.count()}")
+        Log.d("SDASDAD", "${devices.count()}")
         return devices.count()
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bindProduct(
-            context,
-            devices[position],
-            deviceTariffs,
-            deviceAllData,
-            position
+            devices[position]
         )
-        //     holder.bindProduct2(context, devicesInfo[position]
-
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -87,93 +81,66 @@ class DevicesRecycleAdapter(
         val defaultStartDateWater = itemView.findViewById<TextView>(R.id.beginDurationLblWater)
         val defaultEndDateWater = itemView.findViewById<TextView>(R.id.endDurationLblWater)
         val icWater = itemView.findViewById<ImageView>(R.id.deviceImageWater)
+        val actLbWater = itemView.findViewById<TextView>(R.id.actLbWater)
 
         val cur = itemView.findViewById<TextView>(R.id.textView3Water)
 
         fun bindProduct(
-            context: Context,
-            device: Device,
-            deviceTariff: List<DeviceTariff>,
-            deviceAllData: List<DeviceAllData>,
-            position: Int
+            device: Device
         ) {
-            // val resourceId = context.resources.getIdentifier(product.image, "drawable", context.packageName)
-            // productImage.setImageResource(resourceId)
+
             if (device.category == "ee") {
                 constraintLayoutElectrical.visibility = View.VISIBLE
                 constraintLayoutWater.visibility = View.GONE
+                cur.text = ""
             } else if (device.category == "water") {
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
 
-                if (device.deviceInfo.isNotEmpty()) {
+                if (device.device_info.isNotEmpty()) {
                     when {
-                        device.deviceInfo[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
+                        device.device_info[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
                         else -> icWater.setImageResource(R.drawable.drop)
                     }
                     deviceTitleWater.text = device.type
                     deviceIdWater.text = "ID: ${device.id} |"
-                    deviceSerialWater.text = " Серийный номер: ${device.deviceInfo[0].serial}"
-                    deviceLastActWater.text = "Последняя активность: ${device.deviceInfo[0].last_act}"
+                    deviceSerialWater.text = " Серийный номер: ${device.device_info[0].serial}"
+                    deviceLastActWater.text =
+                        "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
+//                    actLbWater.text =
+//                        "Показания от: ${ deviceWater.component2().date }" //TODO ne otobrazhaet
+                }
+                if (device.last_data != null) {
+                    cur.text = "${device.last_data.cur} М³"
                 }
 
             }
 
-
-            /*if(deviceAllData.size > position) {
-                cur.text = "${deviceAllData[position].cur} М³"
-            } else {
-                cur.text = ""
-            }*/
-
-
-
             deviceTitle.text = device.type
             deviceId.text = "ID: ${device.id} |"
             deviceSerial.text =
-                " Серийный номер: ${if (device.deviceInfo.size > position) device.deviceInfo[position].serial else ""}"
+                " Серийный номер: ${if (device.device_info != null ) device.device_info[0].serial else ""}"
             deviceLastAct.text =
-                "Последняя активность: ${if (device.deviceInfo.size > position) device.deviceInfo[position].last_act else ""}"
+                "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
             dayUseLbl.text =
-                "${if (deviceTariff.size > position) deviceTariff[position].t1 else ""} кВт*ч"
+                "${if (device.accumulated_en != null) device.accumulated_en.t1 else ""} кВт*ч"
             nightUseLbl.text =
-                "${if (deviceTariff.size > position) deviceTariff[position].t2 else ""} кВт*ч"
+                "${if (device.accumulated_en != null) device.accumulated_en.t2 else ""} кВт*ч"
             allUseLbl.text =
-                "${if (deviceTariff.size > position) deviceTariff[position].t1 + deviceTariff[position].t2 else ""} кВт*ч" //Todo summa klvt
-            if (deviceAllData.size > position) {
-                dateLbl.text = deviceAllData[position].deviceDate
-                pw_1.text = deviceAllData[position].pw_1.toString()
-                pw_2.text = deviceAllData[position].pw_2.toString()
-                pw_3.text = deviceAllData[position].pw_3.toString()
-                amper_1.text = deviceAllData[position].amper_1.toString()
-                amper_2.text = deviceAllData[position].amper_2.toString()
-                amper_3.text = deviceAllData[position].amper_3.toString()
-                volt_1.text = deviceAllData[position].volt_1.toString()
-                volt_2.text = deviceAllData[position].volt_2.toString()
-                volt_3.text = deviceAllData[position].volt_3.toString()
-                numPhase_1.text = "1"
-                numPhase_2.text = "2"
-                numPhase_3.text = "3"
-            } else {
-                dateLbl.text = ""
-                pw_1.text = ""
-                pw_2.text = ""
-                pw_3.text = ""
-                amper_1.text = ""
-                amper_2.text = ""
-                amper_3.text = ""
-                volt_1.text = ""
-                volt_2.text = ""
-                volt_3.text = ""
-                numPhase_1.text = ""
-                numPhase_2.text = ""
-                numPhase_3.text = ""
-                dateLabel.text = ""
-                phaseLabel.text = ""
-                tokLabel.text = ""
-                mochLabel.text = ""
-                naprLabel.text = ""
-            }
+                "${if (device.accumulated_en != null) device.accumulated_en.t1 + device.accumulated_en.t2 else ""} кВт*ч" //Todo summa klvt
+            dateLbl.text = device.last_data?.date
+            pw_1.text = device.last_data?.pw_1?.toString()
+            pw_2.text = device.last_data?.pw_2?.toString()
+            pw_3.text = device.last_data?.pw_3?.toString()
+            amper_1.text = device.last_data?.amper_1?.toString() ?: "-"
+            amper_2.text = device.last_data?.amper_2?.toString() ?: "-"
+            amper_3.text = device.last_data?.amper_3?.toString() ?: "-"
+            volt_1.text = device.last_data?.volt_1?.toString() ?: "-"
+            volt_2.text = device.last_data?.volt_2?.toString() ?: "-"
+            volt_3.text = device.last_data?.volt_3?.toString() ?: "-"
+            numPhase_1.text = "1"
+            numPhase_2.text = "2"
+            numPhase_3.text = "3"
             defaultStartDateWater.text = UserDataService.defaultBeginDate
             defaultEndDateWater.text = UserDataService.defaultEndDate
             defaultStartDate.text = UserDataService.defaultBeginDate

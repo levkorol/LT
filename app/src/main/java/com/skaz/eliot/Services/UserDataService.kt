@@ -13,8 +13,6 @@ object UserDataService {
         App.prefs.authToken = ""
         App.prefs.isLoggedIn = false
         DataService.devices.clear()
-        DataService.deviceAccTariff.clear()
-        DataService.deviceAllData.clear()
     }
 
     var startDate = ""

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.NavigationView
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.GravityCompat
@@ -27,8 +26,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import android.widget.TextView
-import com.skaz.eliot.Services.DataService.deviceAccTariff
-import com.skaz.eliot.Services.DataService.deviceSelectData
 import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
@@ -50,13 +47,10 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device)
-        //   setSupportActionBar(toolbar)
 
         adapter = DevicesRecycleAdapter(
             this,
-            DataService.devices,
-            deviceAccTariff,
-            DataService.deviceAllData
+            DataService.devices
         )
 
         refreshDataAdapter()
@@ -66,6 +60,8 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
         devicesListView.setHasFixedSize(true)
+
+        toolbar.title = "Устройства абонента: ${adapter.itemCount}" //TODO sozdat sobitie
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -80,7 +76,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHANGE))
 
-
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerView = navigationView.getHeaderView(0)
         val navUsername = headerView.findViewById(R.id.nameLbl) as TextView
@@ -88,28 +83,21 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
-            Log.d("RUN", "RUN")
             mSwipe.isRefreshing = false
             DataService.deviceRequest(App.prefs.authToken) { complete ->
                 if (complete) {
                     mSwipe.isRefreshing = false
                     adapter = DevicesRecycleAdapter(
                         this,
-                        DataService.devices,
-                        deviceAccTariff,
-                        DataService.deviceAllData
+                        DataService.devices
                     )
                     devicesListView.adapter = adapter
-                    Log.d("REFRESH", "Refreshed")
                 } else {
                     mSwipe.isRefreshing = false
-                    Log.d("ERROR", "${App.prefs.authToken}")
                 }
             }
         }
     }
-
-
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -120,7 +108,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
@@ -133,7 +120,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_camera -> {
                 val deviceIntent = Intent(this, DeviceActivity::class.java)
@@ -182,7 +168,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                     ("" + day + " " + UserDataService.ruStartMonth + " " + year)
                 UserDataService.defaultBeginDateSend =
                     ("" + year + "-" + (month + 1) + "-" + day + " 00:00:00")
-                Log.d("SHOW_START_DATE", UserDataService.defaultBeginDateSend)
                 beginDurationLbl.text = UserDataService.startDate
 
                 yearStart = year
@@ -217,9 +202,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 UserDataService.endDate = ("" + day + " " + UserDataService.ruEndMonth + " " + year)
                 UserDataService.defaultEndDateSend =
                     ("" + year + "-" + (month + 1) + "-" + day + " 23:59:59")
-                Log.d("SHOW_END_DATE", UserDataService.defaultEndDateSend)
                 endDurationLbl.text = UserDataService.endDate
-
                 yearEnd = year
                 monthEnd = month
                 dayEnd = day
@@ -238,13 +221,11 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             DataService.deviceId,
             UserDataService.defaultBeginDateSend,
             UserDataService.defaultEndDateSend
-        ) { success ->
-            if (success) {
-                dayUseLbl.text = "${deviceSelectData[0].t1} кВт*ч"
-                nightUseLbl.text = "${deviceSelectData[0].t2} кВт*ч"
-            //    allUseLbl.text = "${deviceSelectData[0].t3} кВт*ч"
-
-                Log.d("SUC", "SESS")
+        ) { deviceTariff ->
+            if (deviceTariff != null) {
+                dayUseLbl.text = "${deviceTariff.t1} кВт*ч"
+                nightUseLbl.text = "${deviceTariff.t2} кВт*ч"
+                allUseLbl.text = "${deviceTariff.t1 + deviceTariff.t2} кВт*ч"
             }
         }
     }
@@ -257,12 +238,11 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         DataService.deviceTariffRequest(
             DataService.sessionForeReguest,
             DataService.deviceId
-        ) { success ->
-            if (success) {
-                dayUseLbl.text = "${deviceAccTariff[0].t1} кВт*ч"
-
-                nightUseLbl.text = "${deviceAccTariff[0].t2} кВт*ч"
-              //  allUseLbl.text = "${deviceAccTariff[0].t3} кВт*ч"   //TODO 3y kvadrat summa kilovat
+        ) { deviceTariff ->
+            if (deviceTariff != null) {
+                dayUseLbl.text = "${deviceTariff.t1} кВт*ч"
+                nightUseLbl.text = "${deviceTariff.t2} кВт*ч"
+                allUseLbl.text = "${deviceTariff.t1 + deviceTariff.t2} кВт*ч"
             }
         }
     }
@@ -278,15 +258,11 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private fun refreshDataAdapter() {
         DataService.deviceRequest(App.prefs.authToken) { complete ->
             if (complete) {
-                // mSwipe.isRefreshing = false
                 adapter = DevicesRecycleAdapter(
                     this,
-                    DataService.devices,
-                    deviceAccTariff,
-                    DataService.deviceAllData
+                    DataService.devices
                 )
                 devicesListView.adapter = adapter
-                Log.d("REFRESH", "Refreshed")
             }
         }
     }

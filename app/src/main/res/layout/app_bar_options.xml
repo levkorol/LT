@@ -20,7 +20,7 @@
                 android:background="@color/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
 
-                app:title="Устройства абонента: 1" android:layout_gravity="center"/>
+                app:title="Устройства абонента" android:layout_gravity="center"/>
 
 
     </android.support.design.widget.AppBarLayout>
