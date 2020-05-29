@@ -10,3 +10,5 @@ const val URL_EE_TARIF_DATE = "${BASE_URL}ee_tarifs_date"
 const val URL_EE_PW_PHASE = "${BASE_URL}ee_pw_phase"
 
 const val BROADCAST_USER_DATA_CHANGE = "BROADCAT_USER_DATA_CHANGE"
+const val URL_WATER_GET_INDICATIONS = "${BASE_URL}device/water/get/indications"
+const val URL_ELECTRIC_GET_INDICATIONS = "${BASE_URL}device/ee/get/indications"

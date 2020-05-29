@@ -1,5 +1,6 @@
 package com.skaz.eliot.Controller
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,7 +13,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -29,6 +29,8 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
+import com.skaz.eliot.Model.ElectricIndicationsRequest
+
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -230,23 +232,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         }
     }
 
-    fun resetDurationBtnClicked(view: View) {
-        beginDurationLbl.text = "01 янв. 2019"
-
-        endDurationLbl.text = UserDataService.defaultEndDate
-        durationUseLbl.text = "Потребление за все время"
-        DataService.deviceTariffRequest(
-            DataService.sessionForeReguest,
-            DataService.deviceId
-        ) { deviceTariff ->
-            if (deviceTariff != null) {
-                dayUseLbl.text = "${deviceTariff.t1} кВт*ч"
-                nightUseLbl.text = "${deviceTariff.t2} кВт*ч"
-                allUseLbl.text = "${deviceTariff.t1 + deviceTariff.t2} кВт*ч"
-            }
-        }
-    }
-
     private val userDataChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
             if (App.prefs.isLoggedIn) {
@@ -266,4 +251,6 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             }
         }
     }
+
+
 }

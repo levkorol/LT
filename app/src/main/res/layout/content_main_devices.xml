@@ -183,14 +183,14 @@
                     app:layout_constraintVertical_bias="1.0" />
 
             <Button
-                    android:id="@+id/resetDurationBtn"
+                    android:id="@+id/resetElectricDurationBtn"
                     style="@style/AppTheme.RoundedCornerMaterialButton"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginTop="-1dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="resetDurationBtnClicked"
+                    android:onClick="resetElectricDurationBtnClicked"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Сбросить период"
@@ -212,9 +212,9 @@
                     android:text="Показать"
                     android:textColor="@android:color/black"
                     android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="@+id/resetDurationBtn"
-                    app:layout_constraintStart_toStartOf="@+id/resetDurationBtn"
-                    app:layout_constraintTop_toBottomOf="@+id/resetDurationBtn" />
+                    app:layout_constraintEnd_toEndOf="@+id/resetElectricDurationBtn"
+                    app:layout_constraintStart_toStartOf="@+id/resetElectricDurationBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/resetElectricDurationBtn" />
 
             <ImageView
                     android:id="@+id/imageView7"
@@ -683,13 +683,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/actLbWater" />
 
             <Button
-                    android:id="@+id/resetDurationBtnWater"
+                    android:id="@+id/resetWaterDurationBtn"
                     style="@style/AppTheme.RoundedCornerMaterialButton"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="resetDurationBtnClicked"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Сбросить период"
@@ -718,7 +717,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.881"
                     app:layout_constraintStart_toEndOf="@+id/endDurationLblWater"
-                    app:layout_constraintTop_toBottomOf="@+id/resetDurationBtnWater" />
+                    app:layout_constraintTop_toBottomOf="@+id/resetWaterDurationBtn" />
 
             <ImageView
                     android:id="@+id/imageView7Water"

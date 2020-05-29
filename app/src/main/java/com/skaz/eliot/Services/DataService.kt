@@ -4,36 +4,106 @@ import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
-import com.google.gson.Gson
+import com.android.volley.toolbox.JsonRequest
 import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Utilities.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.File
 import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import com.google.gson.GsonBuilder
-import android.R.string.no
 import com.google.gson.reflect.TypeToken
 import com.skaz.eliot.Model.*
 
 object DataService {
 
     val devices = ArrayList<Device>()
-    val deviceWater = ArrayList<DeviceWater>()
     var deviceId = ""
     var sessionForeReguest = ""
     val dec = DecimalFormat("#.##")
 
+    fun electricIndicationsRequest(request: ElectricIndicationsRequest, complete: (ElectricIndicationsResponse?) -> Unit) {
+
+        val gson = GsonBuilder().create()
+        val requestBody = gson.toJson(request)
+
+        val req = object :
+            JsonObjectRequest(Method.POST, URL_ELECTRIC_GET_INDICATIONS, null, Response.Listener { response ->
+                try {
+                    val responseType = object : TypeToken<ElectricIndicationsResponse>() {}.type
+                    val response : ElectricIndicationsResponse = gson.fromJson(response.toString(), responseType)
+                    complete(response)
+                } catch (e: Exception) {
+                    complete(null)
+                }
+            }, Response.ErrorListener { error ->
+                Log.d("ERROR", "Could not login user: $error")
+                complete(null)
+            }) {
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers.put("Accept", "application/json; version=1")
+                headers.put("X-Platform", "Android")
+                return headers
+            }
+        }
+
+        App.prefs.requestQueue.add(req)
+    }
+
+    fun waterIndicationsRequest(request: WaterIndicationsRequest, complete: (WaterIndicationsResponse?) -> Unit) {
+
+        val gson = GsonBuilder().create()
+        val requestBody = gson.toJson(request)
+
+        val req = object :
+            JsonObjectRequest(Method.POST, URL_WATER_GET_INDICATIONS, null, Response.Listener { response ->
+                try {
+                    val responseType = object : TypeToken<WaterIndicationsResponse>() {}.type
+                    val response : WaterIndicationsResponse = gson.fromJson(response.toString(), responseType)
+                    complete(response)
+                } catch (e: Exception) {
+                    complete(null)
+                }
+            }, Response.ErrorListener { error ->
+                Log.d("ERROR", "Could not login user: $error")
+                complete(null)
+            }) {
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+
+            override fun getBody(): ByteArray {
+                return requestBody.toByteArray()
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers.put("Accept", "application/json; version=1")
+                headers.put("X-Platform", "Android")
+                return headers
+            }
+        }
+
+        App.prefs.requestQueue.add(req)
+    }
 
     fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()
         jsonBody.put("session", session)
         val requestBody = jsonBody.toString()
-
-
         val builder = GsonBuilder()
         val gson = builder.create()
 
@@ -48,8 +118,7 @@ object DataService {
                     complete(true)
 
                 } catch (e: JSONException) {
-                    Log.d("JSON", "EXC:" + e.localizedMessage)
-                    Log.d("JSON", "EXC" + response)
+
                     complete(false)
                 }
 
@@ -253,13 +322,12 @@ object DataService {
 
                     complete(true)
                 } catch (e: JSONException) {
-                    Log.d("JSON_DEVICEALL", "EXC:" + e.localizedMessage)
-                    Log.d("JSON_DEVICEALL", "EXC" + response)
+
                     complete(false)
                 }
 
             }, Response.ErrorListener { error ->
-                Log.d("ERROR_DEVICE", "Could not login user: $error")
+
                 complete(false)
             }) {
 
@@ -284,7 +352,7 @@ object DataService {
         App.prefs.requestQueue.add(deviceAllDataRequest)
     }
 
-    fun deviceTariffRequest(session: String, id: String, complete: (DeviceTariff?) -> Unit) {
+    /*fun deviceTariffRequest(session: String, id: String, complete: (DeviceTariff?) -> Unit) {
 
         val jsonBody = JSONObject()
 
@@ -324,13 +392,11 @@ object DataService {
 
                     complete(newDeviceTariffAcc)
                 } catch (e: JSONException) {
-                    Log.d("JSON", "EXC:" + e.localizedMessage)
-                    Log.d("JSON", "EXC" + response)
                     complete(null)
                 }
 
             }, Response.ErrorListener { error ->
-                Log.d("ERROR", "Could not login user: $error")
+
                 complete(null)
             }) {
 
@@ -353,7 +419,7 @@ object DataService {
         }
 
         App.prefs.requestQueue.add(deviceTariffRequest)
-    }
+    }*/
 
     fun deviceTariffSelectDateRequest(
         session: String,
@@ -378,33 +444,28 @@ object DataService {
 
                 try {
 
-                    if (response.getDouble("t1") != null) {
+                    t1 = if (response.getDouble("t1") != null) {
                         val t1Double = response.getDouble("t1")
-                        t1 = dec.format(t1Double).toDouble()
+                        dec.format(t1Double).toDouble()
 
                     } else {
-                        t1 = 0.0
+                        0.0
                     }
 
-                    if (response.getDouble("t2") != null) {
+                    t2 = if (response.getDouble("t2") != null) {
                         val t2Double = response.getDouble("t2")
-                        t2 = dec.format(t2Double).toDouble()
+                        dec.format(t2Double).toDouble()
                     } else {
-                        t2 = 0.0
+                        0.0
                     }
                     val t3 = response.getDouble("t1") + response.getDouble("t2")
                     val t3String = dec.format(t3)
 
                     val newDeviceTariffAcc2 = DeviceTariff(t1, t2, t3String, "", "", "", false)
 
-                    Log.d("DEVICE_ID", DataService.deviceId)
-                    Log.d("T1", "${newDeviceTariffAcc2.t1}")
-
                     complete(newDeviceTariffAcc2)
                 } catch (e: JSONException) {
-                    Log.d("JSON", "EXC:" + e.localizedMessage)
-                    Log.d("JSON", "EXC" + response)
-                    Log.d("Trouble", "trouble")
+
                     complete(null)
                 }
 

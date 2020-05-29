@@ -35,12 +35,9 @@ object AuthService {
                 App.prefs.authToken = response.getString("session")
                 App.prefs.isLoggedIn = true
 
-                Log.d("AUTH_TOKEN", App.prefs.authToken)
-                Log.d("ERROR", "Could not login user: $App.prefs.authToken")
                 complete(true)
             } catch (e: JSONException) {
-                Log.d("JSON", "EXC:" + e.localizedMessage)
-                Log.d("JSON", "EXC" + response)
+
                 complete(false)
             }
 

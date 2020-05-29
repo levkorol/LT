@@ -1,5 +1,6 @@
 package com.skaz.eliot.Adapters
 
+import android.app.AlertDialog
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
@@ -7,19 +8,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Model.Device
-import com.skaz.eliot.Model.DeviceAllData
-import com.skaz.eliot.Model.DeviceTariff
-import com.skaz.eliot.Model.DeviceWater
+import com.skaz.eliot.Model.ElectricIndicationsRequest
 import com.skaz.eliot.R
+import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
+import kotlinx.android.synthetic.main.content_main_devices.*
 
 class DevicesRecycleAdapter(
     val context: Context,
     private val devices: List<Device>
-  //  private val deviceWater: List<DeviceWater>
+    //  private val deviceWater: List<WaterIndicationsResponse>
 ) : RecyclerView.Adapter<DevicesRecycleAdapter.Holder>() {
 
 
@@ -82,6 +85,12 @@ class DevicesRecycleAdapter(
         val defaultEndDateWater = itemView.findViewById<TextView>(R.id.endDurationLblWater)
         val icWater = itemView.findViewById<ImageView>(R.id.deviceImageWater)
         val actLbWater = itemView.findViewById<TextView>(R.id.actLbWater)
+        val resetElectricDurationBtn = itemView.findViewById<Button>(R.id.resetElectricDurationBtn)
+        val showDurationBtn = itemView.findViewById<Button>(R.id.showDurationBtn)
+        val resetWaterDurationBtn = itemView.findViewById<Button>(R.id.resetWaterDurationBtn)
+        val beginDurationLbl = itemView.findViewById<TextView>(R.id.beginDurationLbl)
+        val endDurationLbl = itemView.findViewById<TextView>(R.id.endDurationLbl)
+        val durationUseLbl = itemView.findViewById<TextView>(R.id.durationUseLbl)
 
         val cur = itemView.findViewById<TextView>(R.id.textView3Water)
 
@@ -93,6 +102,38 @@ class DevicesRecycleAdapter(
                 constraintLayoutElectrical.visibility = View.VISIBLE
                 constraintLayoutWater.visibility = View.GONE
                 cur.text = ""
+                showDurationBtn.setOnClickListener {
+
+                    durationUseLbl.text = "Потребление за все время"
+                    val request = ElectricIndicationsRequest(
+                        App.prefs.authToken, device.id.toString(),
+                        beginDurationLbl.text.toString(), endDurationLbl.text.toString()
+                    )
+                }
+                resetElectricDurationBtn.setOnClickListener {
+
+                    beginDurationLbl.text = "01 янв. 2019"
+
+                    endDurationLbl.text = UserDataService.defaultEndDate
+                    durationUseLbl.text = "Потребление за все время"
+                    val request = ElectricIndicationsRequest(
+                        App.prefs.authToken, device.id.toString(),
+                        null, null
+                    )
+                    DataService.electricIndicationsRequest(request) { response ->
+                        if (response == null) {
+
+                        } else if (response.error != null) {
+                            showAlter(response.error)
+                        } else if (response.notice != null) {
+                            showAlter(response.notice)
+                        } else {
+                            dayUseLbl.text = "${response.t1} кВт*ч"
+                            nightUseLbl.text = "${response.t2} кВт*ч"
+                            allUseLbl.text = "${response.t1 + response.t2} кВт*ч"
+                        }
+                    }
+                }
             } else if (device.category == "water") {
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
@@ -107,8 +148,8 @@ class DevicesRecycleAdapter(
                     deviceSerialWater.text = " Серийный номер: ${device.device_info[0].serial}"
                     deviceLastActWater.text =
                         "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
-//                    actLbWater.text =
-//                        "Показания от: ${ deviceWater.component2().date }" //TODO ne otobrazhaet
+                    actLbWater.text =
+                        "Показания от: ${device.last_data?.date ?: ""}" //TODO ne otobrazhaet
                 }
                 if (device.last_data != null) {
                     cur.text = "${device.last_data.cur} М³"
@@ -119,7 +160,7 @@ class DevicesRecycleAdapter(
             deviceTitle.text = device.type
             deviceId.text = "ID: ${device.id} |"
             deviceSerial.text =
-                " Серийный номер: ${if (device.device_info != null ) device.device_info[0].serial else ""}"
+                " Серийный номер: ${if (device.device_info != null) device.device_info[0].serial else ""}"
             deviceLastAct.text =
                 "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
             dayUseLbl.text =
@@ -146,5 +187,15 @@ class DevicesRecycleAdapter(
             defaultStartDate.text = UserDataService.defaultBeginDate
             defaultEndDate.text = UserDataService.defaultEndDate
         }
+    }
+
+    private fun showAlter(text: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Ошибка")
+        builder.setMessage(text)
+        builder.setPositiveButton("Хорошо") { _, _ ->
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }

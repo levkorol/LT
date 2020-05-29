@@ -98,7 +98,7 @@
             app:layout_constraintTop_toBottomOf="@+id/actLbWater" />
 
     <Button
-            android:id="@+id/resetDurationBtnWater"
+            android:id="@+id/resetWaterDurationBtn"
             style="@style/AppTheme.RoundedCornerMaterialButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -133,7 +133,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.819"
             app:layout_constraintStart_toEndOf="@+id/endDurationLblWater"
-            app:layout_constraintTop_toBottomOf="@+id/resetDurationBtnWater" />
+            app:layout_constraintTop_toBottomOf="@+id/resetWaterDurationBtn" />
 
     <ImageView
             android:id="@+id/imageView7Water"
