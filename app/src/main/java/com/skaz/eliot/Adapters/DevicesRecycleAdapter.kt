@@ -21,7 +21,7 @@ import com.skaz.eliot.R
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
 import java.util.*
- 
+  
 class DevicesRecycleAdapter(
     val context: Context,
     private val devices: List<Device>
