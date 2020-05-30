@@ -1,6 +1,7 @@
 package com.skaz.eliot.Adapters
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
@@ -14,16 +15,19 @@ import android.widget.TextView
 import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.ElectricIndicationsRequest
+import com.skaz.eliot.Model.MyDate
+import com.skaz.eliot.Model.WaterIndicationsRequest
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
-import kotlinx.android.synthetic.main.content_main_devices.*
+import java.util.*
 
 class DevicesRecycleAdapter(
     val context: Context,
     private val devices: List<Device>
     //  private val deviceWater: List<WaterIndicationsResponse>
 ) : RecyclerView.Adapter<DevicesRecycleAdapter.Holder>() {
+    private val deviceWrappers: List<DeviceWrapper> = devices.map { DeviceWrapper(it) }.toList()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -33,13 +37,13 @@ class DevicesRecycleAdapter(
     }
 
     override fun getItemCount(): Int {
-        Log.d("SDASDAD", "${devices.count()}")
-        return devices.count()
+        Log.d("SDASDAD", "${deviceWrappers.count()}")
+        return deviceWrappers.count()
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bindProduct(
-            devices[position]
+            deviceWrappers[position]
         )
     }
 
@@ -65,8 +69,8 @@ class DevicesRecycleAdapter(
         val numPhase_1 = itemView.findViewById<TextView>(R.id.phaseNumTxt)
         val numPhase_2 = itemView.findViewById<TextView>(R.id.phaseNumTxt2)
         val numPhase_3 = itemView.findViewById<TextView>(R.id.phaseNumTxt3)
-        val defaultStartDate = itemView.findViewById<TextView>(R.id.beginDurationLbl)
-        val defaultEndDate = itemView.findViewById<TextView>(R.id.endDurationLbl)
+        val beginElectricDurationLbl = itemView.findViewById<TextView>(R.id.beginElectricDurationLbl)
+        val endElectricDurationLbl = itemView.findViewById<TextView>(R.id.endElectricDurationLbl)
         val dateLabel = itemView.findViewById<TextView>(R.id.showUseLbl2)
         val phaseLabel = itemView.findViewById<TextView>(R.id.showUseLbl3)
         val tokLabel = itemView.findViewById<TextView>(R.id.showUseLbl4)
@@ -81,111 +85,207 @@ class DevicesRecycleAdapter(
         val deviceIdWater = itemView.findViewById<TextView>(R.id.idLblWater)
         val deviceSerialWater = itemView.findViewById<TextView>(R.id.serialLblWater)
         val deviceLastActWater = itemView.findViewById<TextView>(R.id.lastActLblWater)
-        val defaultStartDateWater = itemView.findViewById<TextView>(R.id.beginDurationLblWater)
-        val defaultEndDateWater = itemView.findViewById<TextView>(R.id.endDurationLblWater)
+        val beginWaterDurationLbl = itemView.findViewById<TextView>(R.id.beginWaterDurationLbl)
+        val endWaterDurationLbl = itemView.findViewById<TextView>(R.id.endWaterDurationLbl)
         val icWater = itemView.findViewById<ImageView>(R.id.deviceImageWater)
         val actLbWater = itemView.findViewById<TextView>(R.id.actLbWater)
         val resetElectricDurationBtn = itemView.findViewById<Button>(R.id.resetElectricDurationBtn)
-        val showDurationBtn = itemView.findViewById<Button>(R.id.showDurationBtn)
+        val showElectricDurationBtn = itemView.findViewById<Button>(R.id.showElectricDurationBtn)
         val resetWaterDurationBtn = itemView.findViewById<Button>(R.id.resetWaterDurationBtn)
-        val beginDurationLbl = itemView.findViewById<TextView>(R.id.beginDurationLbl)
-        val endDurationLbl = itemView.findViewById<TextView>(R.id.endDurationLbl)
-        val durationUseLbl = itemView.findViewById<TextView>(R.id.durationUseLbl)
-
+        val showWaterDurationBtn = itemView.findViewById<Button>(R.id.showWaterDurationBtn)
+        val electricDurationUseLbl = itemView.findViewById<TextView>(R.id.electricDurationUseLbl)
+        val durationUseLblWater = itemView.findViewById<TextView>(R.id.durationUseLblWater)
         val cur = itemView.findViewById<TextView>(R.id.textView3Water)
 
+
+        fun showElectricDurationStartBtnClicked(wrapper: DeviceWrapper) {
+            val dpd =
+                DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
+                    wrapper.startDate = MyDate(year, month, day)
+                }, wrapper.startDate!!.year, wrapper.startDate!!.month, wrapper.startDate!!.day)
+            dpd.show()
+        }
+
+        fun showElectricDurationEndBtnClicked(wrapper: DeviceWrapper) {
+            val dpd =
+                DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    endElectricDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
+                    wrapper.finishDate = MyDate(year, month, day)
+                }, wrapper.finishDate!!.year, wrapper.finishDate!!.month, wrapper.finishDate!!.day)
+            dpd.show()
+        }
+
+        fun showWaterDurationStartBtnClicked(wrapper: DeviceWrapper) {
+            val dpd =
+                DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    beginWaterDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
+                    wrapper.startDate = MyDate(year, month, day)
+                    if (wrapper.finishDate == null) {
+                        wrapper.finishDate = UserDataService.defFinishDate
+                        endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
+                    }
+                },
+                    wrapper.startDate?.year ?: UserDataService.defStartDate.year,
+                    wrapper.startDate?.month ?: UserDataService.defStartDate.month,
+                    wrapper.startDate?.day ?: UserDataService.defStartDate.day)
+            dpd.show()
+        }
+
+        fun showWaterDurationEndBtnClicked(wrapper: DeviceWrapper) {
+            val dpd =
+                DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
+                    endWaterDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
+                    wrapper.finishDate = MyDate(year, month, day)
+                    if (wrapper.startDate == null) {
+                        wrapper.startDate = UserDataService.defStartDate
+                        beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
+                    }
+                },
+                    wrapper.startDate?.year ?: UserDataService.defFinishDate.year,
+                    wrapper.startDate?.month ?: UserDataService.defFinishDate.month,
+                    wrapper.startDate?.day ?: UserDataService.defFinishDate.day)
+            dpd.show()
+        }
+
+        fun electricRequest(wrapper: DeviceWrapper) {
+            electricDurationUseLbl.text = "Потребление за все время"
+            val request = ElectricIndicationsRequest(
+                App.prefs.authToken,
+                wrapper.device.id.toString(),
+                UserDataService.dateToStrinJson(wrapper.startDate),
+                UserDataService.dateToStrinJson(wrapper.finishDate)
+            )
+            DataService.electricIndicationsRequest(request) { response ->
+                if (response == null) {
+
+                } else if (response.error != null) {
+                    showAlter(response.error)
+                } else if (response.notice != null) {
+                    showAlter(response.notice)
+                } else {
+                    dayUseLbl.text = "${response.t1} кВт*ч"
+                    nightUseLbl.text = "${response.t2} кВт*ч"
+                    allUseLbl.text = "${response.t1 + response.t2} кВт*ч"
+                }
+            }
+        }
+
+        fun waterRequest(wrapper: DeviceWrapper) {
+            durationUseLblWater.text = "Потребление за все время"
+            val request = WaterIndicationsRequest(
+                App.prefs.authToken,
+                wrapper.device.id.toString(),
+                UserDataService.dateToStrinJson(wrapper.startDate),
+                UserDataService.dateToStrinJson(wrapper.finishDate)
+            )
+            DataService.waterIndicationsRequest(request) { response ->
+                if (response == null) {
+
+                } else if (response.error != null) {
+                    showAlter(response.error)
+                } else if (response.notice != null) {
+                    showAlter(response.notice)
+                } else {
+                    cur.text = "${response.value} М³"
+                }
+            }
+        }
+
         fun bindProduct(
-            device: Device
+            wrapper: DeviceWrapper
         ) {
 
-            if (device.category == "ee") {
+            if (wrapper.device.category == "ee") {
                 constraintLayoutElectrical.visibility = View.VISIBLE
                 constraintLayoutWater.visibility = View.GONE
                 cur.text = ""
-                showDurationBtn.setOnClickListener {
-
-                    durationUseLbl.text = "Потребление за все время"
-                    val request = ElectricIndicationsRequest(
-                        App.prefs.authToken, device.id.toString(),
-                        beginDurationLbl.text.toString(), endDurationLbl.text.toString()
-                    )
+                showElectricDurationBtn.setOnClickListener {
+                    electricRequest(wrapper)
                 }
                 resetElectricDurationBtn.setOnClickListener {
-
-                    beginDurationLbl.text = "01 янв. 2019"
-
-                    endDurationLbl.text = UserDataService.defaultEndDate
-                    durationUseLbl.text = "Потребление за все время"
-                    val request = ElectricIndicationsRequest(
-                        App.prefs.authToken, device.id.toString(),
-                        null, null
-                    )
-                    DataService.electricIndicationsRequest(request) { response ->
-                        if (response == null) {
-
-                        } else if (response.error != null) {
-                            showAlter(response.error)
-                        } else if (response.notice != null) {
-                            showAlter(response.notice)
-                        } else {
-                            dayUseLbl.text = "${response.t1} кВт*ч"
-                            nightUseLbl.text = "${response.t2} кВт*ч"
-                            allUseLbl.text = "${response.t1 + response.t2} кВт*ч"
-                        }
-                    }
+                    wrapper.startDate = UserDataService.defStartDate
+                    wrapper.finishDate = UserDataService.defFinishDate
+                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
+                    endElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
+                    electricRequest(wrapper)
                 }
-            } else if (device.category == "water") {
+                beginElectricDurationLbl.setOnClickListener{
+                    showElectricDurationStartBtnClicked(wrapper)
+                }
+                endElectricDurationLbl.setOnClickListener{
+                    showElectricDurationEndBtnClicked(wrapper)
+                }
+            } else if (wrapper.device.category == "water") {
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
 
-                if (device.device_info.isNotEmpty()) {
+                if (wrapper.device.device_info.isNotEmpty()) {
                     when {
-                        device.device_info[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
+                        wrapper.device.device_info[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
                         else -> icWater.setImageResource(R.drawable.drop)
                     }
-                    deviceTitleWater.text = device.type
-                    deviceIdWater.text = "ID: ${device.id} |"
-                    deviceSerialWater.text = " Серийный номер: ${device.device_info[0].serial}"
+                    deviceTitleWater.text = wrapper.device.type
+                    deviceIdWater.text = "ID: ${wrapper.device.id} |"
+                    deviceSerialWater.text = " Серийный номер: ${wrapper.device.device_info[0].serial}"
                     deviceLastActWater.text =
-                        "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
+                        "Последняя активность: ${if (wrapper.device.device_info != null) wrapper.device.device_info[0].last_act else ""}"
                     actLbWater.text =
-                        "Показания от: ${device.last_data?.date ?: ""}" //TODO ne otobrazhaet
+                        "Показания от: ${wrapper.device.last_data?.date ?: ""}" //TODO ne otobrazhaet
                 }
-                if (device.last_data != null) {
-                    cur.text = "${device.last_data.cur} М³"
+                if (wrapper.device.last_data != null) {
+                    cur.text = "${wrapper.device.last_data?.cur} М³"
+                }
+
+                showWaterDurationBtn.setOnClickListener {
+                    waterRequest(wrapper)
+                }
+                resetWaterDurationBtn.setOnClickListener{
+                    wrapper.startDate = null
+                    wrapper.finishDate = null
+                    beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.defStartDate)
+                    endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate ?: UserDataService.defFinishDate)
+                    waterRequest(wrapper)
+                }
+
+                beginWaterDurationLbl.setOnClickListener{
+                    showWaterDurationStartBtnClicked(wrapper)
+                }
+                endWaterDurationLbl.setOnClickListener{
+                    showWaterDurationEndBtnClicked(wrapper)
                 }
 
             }
 
-            deviceTitle.text = device.type
-            deviceId.text = "ID: ${device.id} |"
+            deviceTitle.text = wrapper.device.type
+            deviceId.text = "ID: ${wrapper.device.id} |"
             deviceSerial.text =
-                " Серийный номер: ${if (device.device_info != null) device.device_info[0].serial else ""}"
+                " Серийный номер: ${if (wrapper.device.device_info != null) wrapper.device.device_info[0].serial else ""}"
             deviceLastAct.text =
-                "Последняя активность: ${if (device.device_info != null) device.device_info[0].last_act else ""}"
+                "Последняя активность: ${if (wrapper.device.device_info != null) wrapper.device.device_info[0].last_act else ""}"
             dayUseLbl.text =
-                "${if (device.accumulated_en != null) device.accumulated_en.t1 else ""} кВт*ч"
+                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t1 else ""} кВт*ч"
             nightUseLbl.text =
-                "${if (device.accumulated_en != null) device.accumulated_en.t2 else ""} кВт*ч"
+                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t2 else ""} кВт*ч"
             allUseLbl.text =
-                "${if (device.accumulated_en != null) device.accumulated_en.t1 + device.accumulated_en.t2 else ""} кВт*ч" //Todo summa klvt
-            dateLbl.text = device.last_data?.date
-            pw_1.text = device.last_data?.pw_1?.toString()
-            pw_2.text = device.last_data?.pw_2?.toString()
-            pw_3.text = device.last_data?.pw_3?.toString()
-            amper_1.text = device.last_data?.amper_1?.toString() ?: "-"
-            amper_2.text = device.last_data?.amper_2?.toString() ?: "-"
-            amper_3.text = device.last_data?.amper_3?.toString() ?: "-"
-            volt_1.text = device.last_data?.volt_1?.toString() ?: "-"
-            volt_2.text = device.last_data?.volt_2?.toString() ?: "-"
-            volt_3.text = device.last_data?.volt_3?.toString() ?: "-"
+                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t1 + wrapper.device.accumulated_en!!.t2 else ""} кВт*ч" //Todo summa klvt
+            dateLbl.text = wrapper.device.last_data?.date
+            pw_1.text = wrapper.device.last_data?.pw_1?.toString()
+            pw_2.text = wrapper.device.last_data?.pw_2?.toString()
+            pw_3.text = wrapper.device.last_data?.pw_3?.toString()
+            amper_1.text = wrapper.device.last_data?.amper_1?.toString() ?: "-"
+            amper_2.text = wrapper.device.last_data?.amper_2?.toString() ?: "-"
+            amper_3.text = wrapper.device.last_data?.amper_3?.toString() ?: "-"
+            volt_1.text = wrapper.device.last_data?.volt_1?.toString() ?: "-"
+            volt_2.text = wrapper.device.last_data?.volt_2?.toString() ?: "-"
+            volt_3.text = wrapper.device.last_data?.volt_3?.toString() ?: "-"
             numPhase_1.text = "1"
             numPhase_2.text = "2"
             numPhase_3.text = "3"
-            defaultStartDateWater.text = UserDataService.defaultBeginDate
-            defaultEndDateWater.text = UserDataService.defaultEndDate
-            defaultStartDate.text = UserDataService.defaultBeginDate
-            defaultEndDate.text = UserDataService.defaultEndDate
+            beginWaterDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defStartDate)
+            endWaterDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defFinishDate)
+            beginElectricDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defStartDate)
+            endElectricDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defFinishDate)
         }
     }
 

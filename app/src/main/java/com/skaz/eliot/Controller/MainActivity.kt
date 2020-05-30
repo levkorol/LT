@@ -1,33 +1,32 @@
 package com.skaz.eliot.Controller
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.skaz.eliot.R
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.skaz.eliot.R
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
-import com.skaz.eliot.Services.UserDataService
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.schedule
 
-
-
 class MainActivity : AppCompatActivity() {
-
+    val LOGIN = "login"
+    val PASSWORD = "password"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         loginSpinner.visibility = View.INVISIBLE
+
+        val sPref = getPreferences(Context.MODE_PRIVATE)
+        loginEmailTxt.setText(sPref.getString(LOGIN, ""))
+        loginPasswordText.setText(sPref.getString(PASSWORD, ""))
 
         if (App.prefs.isLoggedIn) {
 
@@ -46,31 +45,6 @@ class MainActivity : AppCompatActivity() {
             enableSpinner(false)
           //  Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
                 }
-
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-
-        when (month) {
-            0 -> UserDataService.ruStartMonth = "янв."
-            1 -> UserDataService.ruStartMonth = "фев."
-            2 -> UserDataService.ruStartMonth = "мар."
-            3 -> UserDataService.ruStartMonth = "апр."
-            4 -> UserDataService.ruStartMonth = "май."
-            5 -> UserDataService.ruStartMonth = "июн."
-            6 -> UserDataService.ruStartMonth = "июл."
-            7 -> UserDataService.ruStartMonth = "авг."
-            8 -> UserDataService.ruStartMonth = "сен."
-            9 -> UserDataService.ruStartMonth = "окт."
-            10 -> UserDataService.ruStartMonth = "ноя."
-            11 -> UserDataService.ruStartMonth = "дек."
-            else -> UserDataService.ruStartMonth = "янв."
-        }
-
-      UserDataService.defaultEndDate = ("" + day + " " + (UserDataService.ruStartMonth) + " " + year)
-        UserDataService.defaultEndDateSend = ("" + year + "-" + (month + 1) + "-" + day)
     }
 
 
@@ -109,7 +83,11 @@ class MainActivity : AppCompatActivity() {
 
             AuthService.loginRequest(login, password) { loginSuccess ->
                     if (loginSuccess) {
-
+                        val sPref = getPreferences(Context.MODE_PRIVATE)
+                        val ed = sPref.edit()
+                        ed.putString(LOGIN, login)
+                        ed.putString(PASSWORD, password)
+                        ed.apply()
                         AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
                             if (getSession) {
                                 App.prefs.isLoggedIn = true

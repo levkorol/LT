@@ -190,7 +190,6 @@
                     android:layout_marginTop="-1dp"
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="resetElectricDurationBtnClicked"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Сбросить период"
@@ -200,7 +199,7 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
             <Button
-                    android:id="@+id/showDurationBtn"
+                    android:id="@+id/showElectricDurationBtn"
                     style="@style/AppTheme.RoundedCornerMaterialButton2"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
@@ -247,42 +246,40 @@
                     android:fontFamily="@font/exo_2_medium"
                     android:text="Конец:"
                     android:textSize="12sp"
-                    app:layout_constraintStart_toEndOf="@+id/beginDurationLbl"
+                    app:layout_constraintStart_toEndOf="@+id/beginElectricDurationLbl"
                     app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
             <TextView
-                    android:id="@+id/beginDurationLbl"
+                    android:id="@+id/beginElectricDurationLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="showDurationStartBtnClicked"
                     android:text="01 янв. 2019"
                     android:textColor="@android:color/black"
                     app:layout_constraintStart_toEndOf="@+id/imageView7"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <TextView
-                    android:id="@+id/endDurationLbl"
+                    android:id="@+id/endElectricDurationLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="showDurationEndBtnClicked"
                     android:text="01 янв. 2019"
                     android:textColor="@android:color/black"
                     app:layout_constraintStart_toStartOf="@+id/textView4"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                    android:id="@+id/durationUseLbl"
+                    android:id="@+id/electricDurationUseLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/exo_2_medium"
                     android:text="Потребление за все время"
                     android:textColor="@android:color/holo_green_dark"
                     android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@+id/beginDurationLbl"
-                    app:layout_constraintTop_toBottomOf="@+id/beginDurationLbl" />
+                    app:layout_constraintStart_toStartOf="@+id/beginElectricDurationLbl"
+                    app:layout_constraintTop_toBottomOf="@+id/beginElectricDurationLbl" />
 
             <ImageView
                     android:id="@+id/imageView"
@@ -293,7 +290,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/imageView8"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toStartOf="@+id/imageView7"
-                    app:layout_constraintTop_toBottomOf="@+id/showDurationBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/showElectricDurationBtn"
                     app:srcCompat="@android:color/transparent" />
 
             <ImageView
@@ -314,7 +311,7 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/rounded_shape"
-                    app:layout_constraintEnd_toEndOf="@+id/showDurationBtn"
+                    app:layout_constraintEnd_toEndOf="@+id/showElectricDurationBtn"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/imageView8"
                     app:layout_constraintTop_toTopOf="@+id/imageView"
@@ -589,7 +586,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-
             <ImageView
                     android:id="@+id/deviceImageWater"
                     android:layout_width="45dp"
@@ -701,13 +697,12 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView6Water" />
 
             <Button
-                    android:id="@+id/showDurationBtnWater"
+                    android:id="@+id/showWaterDurationBtn"
                     style="@style/AppTheme.RoundedCornerMaterialButton2"
                     android:layout_width="104dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="8dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="showDurationBtnClicked"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Показать"
@@ -716,7 +711,7 @@
                     android:textSize="10sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.881"
-                    app:layout_constraintStart_toEndOf="@+id/endDurationLblWater"
+                    app:layout_constraintStart_toEndOf="@+id/endWaterDurationLbl"
                     app:layout_constraintTop_toBottomOf="@+id/resetWaterDurationBtn" />
 
             <ImageView
@@ -754,28 +749,26 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView6Water" />
 
             <TextView
-                    android:id="@+id/beginDurationLblWater"
+                    android:id="@+id/beginWaterDurationLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="26dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="showDurationStartBtnClicked"
                     android:text="01 янв. 2019"
                     android:textColor="@android:color/black"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView2Water" />
 
             <TextView
-                    android:id="@+id/endDurationLblWater"
+                    android:id="@+id/endWaterDurationLbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="24dp"
                     android:fontFamily="@font/exo_2_medium"
-                    android:onClick="showDurationEndBtnClicked"
                     android:text="01 янв. 2019"
                     android:textColor="@android:color/black"
-                    app:layout_constraintStart_toEndOf="@+id/beginDurationLblWater"
+                    app:layout_constraintStart_toEndOf="@+id/beginWaterDurationLbl"
                     app:layout_constraintTop_toBottomOf="@+id/imageView6Water" />
 
             <TextView
@@ -788,7 +781,7 @@
                     android:textColor="@android:color/holo_green_dark"
                     android:textSize="10sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/beginDurationLblWater" />
+                    app:layout_constraintTop_toBottomOf="@+id/beginWaterDurationLbl" />
 
             <TextView
                     android:id="@+id/textView3Water"
