@@ -33,14 +33,14 @@ class MainActivity : AppCompatActivity() {
             enableSpinner(true)
             Toast.makeText(this, "Выполняется вход в приложение", Toast.LENGTH_LONG).show()
 
-                    AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
+                    /*AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
                         if (getSession) {
                             deviceInfo()
                         } else {
                             Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
                             enableSpinner(false)
                         }
-                    }
+                    }*/
                 } else {
             enableSpinner(false)
           //  Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    fun deviceInfo() {
+/*    fun deviceInfo() {
         DataService.deviceRequest(App.prefs.authToken) { response ->
             if (response) {
 
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
             }
         }
-    }
+    }*/
 
 
     fun spinnerStop() {

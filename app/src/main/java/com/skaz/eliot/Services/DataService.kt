@@ -18,7 +18,6 @@ import com.skaz.eliot.Model.*
 
 object DataService {
 
-    val devices = ArrayList<Device>()
     var deviceId = ""
     var sessionForeReguest = ""
     val dec = DecimalFormat("#.##")
@@ -99,7 +98,7 @@ object DataService {
         App.prefs.requestQueue.add(req)
     }
 
-    fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
+    fun deviceRequest(session: String, complete: (List<Device>?) -> Unit) {
 
         val jsonBody = JSONObject()
         jsonBody.put("session", session)
@@ -110,21 +109,16 @@ object DataService {
         val devicesRequest = object :
             JsonArrayRequest(Method.POST, URL_DEVICES, null, Response.Listener { response ->
                 try {
-                    this.devices.clear()
                     val listType = object : TypeToken<List<Device>>() {}.type
-                    val devs : List<Device>  = gson.fromJson(response.toString(), listType)
-                    this.devices.addAll(devs)
-
-                    complete(true)
-
+                    val devices : List<Device>  = gson.fromJson(response.toString(), listType)
+                    complete(devices)
                 } catch (e: JSONException) {
-
-                    complete(false)
+                    complete(null)
                 }
 
             }, Response.ErrorListener { error ->
                 Log.d("ERROR", "Could not login user: $error")
-                complete(false)
+                complete(null)
             }) {
 
             override fun getBodyContentType(): String {
