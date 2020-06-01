@@ -20,23 +20,21 @@ object DataService {
     val devices = ArrayList<Device>()
     val dec = DecimalFormat("#.##")
 
-    fun electricIndicationsRequest(request: ElectricIndicationsRequest, complete: (ElectricIndicationsResponse?) -> Unit) {
-
+    private fun <TRequest, TResponse> makeJsonObjectRequest(url: String, request: TRequest, onResponse: (TResponse?) -> Unit) {
         val gson = GsonBuilder().create()
         val requestBody = gson.toJson(request)
-
         val req = object :
-            JsonObjectRequest(Method.POST, URL_ELECTRIC_GET_INDICATIONS, null, Response.Listener { response ->
+            JsonObjectRequest(Method.POST, url, null, Response.Listener { response ->
                 try {
-                    val responseType = object : TypeToken<ElectricIndicationsResponse>() {}.type
-                    val response : ElectricIndicationsResponse = gson.fromJson(response.toString(), responseType)
-                    complete(response)
+                    val responseType = object : TypeToken<TResponse>() {}.type
+                    val response : TResponse = gson.fromJson(response.toString(), responseType)
+                    onResponse(response)
                 } catch (e: Exception) {
-                    complete(null)
+                    onResponse(null)
                 }
             }, Response.ErrorListener { error ->
-                Log.d("ERROR", "Could not login user: $error")
-                complete(null)
+                Log.d("ERROR", "Could not obtain request $requestBody: $error")
+                onResponse(null)
             }) {
 
             override fun getBodyContentType(): String {
@@ -54,27 +52,25 @@ object DataService {
                 return headers
             }
         }
-
         App.prefs.requestQueue.add(req)
     }
 
-    fun waterIndicationsRequest(request: WaterIndicationsRequest, complete: (WaterIndicationsResponse?) -> Unit) {
-
+    private fun <TRequest, TResponse> makeJsonArrayRequest(url: String, request: TRequest, onResponse: (List<TResponse>?) -> Unit) {
         val gson = GsonBuilder().create()
         val requestBody = gson.toJson(request)
-
         val req = object :
-            JsonObjectRequest(Method.POST, URL_WATER_GET_INDICATIONS, null, Response.Listener { response ->
+            JsonObjectRequest(Method.POST, url, null, Response.Listener { response ->
                 try {
-                    val responseType = object : TypeToken<WaterIndicationsResponse>() {}.type
-                    val response : WaterIndicationsResponse = gson.fromJson(response.toString(), responseType)
-                    complete(response)
+                    val responseType = object : TypeToken<List<TResponse>>() {}.type
+                    val response : List<TResponse> = gson.fromJson(response.toString(), responseType)
+                    onResponse(response)
                 } catch (e: Exception) {
-                    complete(null)
+                    Log.d("ERROR", "Could not obtain request $requestBody: exception ${e.message}")
+                    onResponse(null)
                 }
             }, Response.ErrorListener { error ->
-                Log.d("ERROR", "Could not login user: $error")
-                complete(null)
+                Log.d("ERROR", "Could not obtain request $requestBody: error $error")
+                onResponse(null)
             }) {
 
             override fun getBodyContentType(): String {
@@ -92,8 +88,15 @@ object DataService {
                 return headers
             }
         }
-
         App.prefs.requestQueue.add(req)
+    }
+
+    fun electricIndicationsRequest(request: ElectricIndicationsRequest, onResponse: (ElectricIndicationsResponse?) -> Unit) {
+        makeJsonObjectRequest<ElectricIndicationsRequest, ElectricIndicationsResponse>(URL_ELECTRIC_GET_INDICATIONS, request, onResponse);
+    }
+
+    fun waterIndicationsRequest(request: WaterIndicationsRequest, onResponse: (WaterIndicationsResponse?) -> Unit) {
+        makeJsonObjectRequest<WaterIndicationsRequest, WaterIndicationsResponse>(URL_WATER_GET_INDICATIONS, request, onResponse)
     }
 
     fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
