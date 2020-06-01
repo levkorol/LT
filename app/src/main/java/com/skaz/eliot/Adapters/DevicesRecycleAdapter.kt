@@ -145,8 +145,8 @@ class DevicesRecycleAdapter(
             dpd.show()
         }
 
-        fun electricRequest(wrapper: DeviceWrapper) {
-            electricDurationUseLbl.text = "Потребление за все время"
+        fun electricRequest(wrapper: DeviceWrapper, messageText: String) {
+            electricDurationUseLbl.text = messageText
             val request = ElectricIndicationsRequest(
                 UserDataService.authToken,
                 wrapper.device.id.toString(),
@@ -168,8 +168,8 @@ class DevicesRecycleAdapter(
             }
         }
 
-        fun waterRequest(wrapper: DeviceWrapper) {
-            durationUseLblWater.text = "Потребление за все время"
+        fun waterRequest(wrapper: DeviceWrapper, messageText: String) {
+            durationUseLblWater.text = messageText
             val request = WaterIndicationsRequest(
                 UserDataService.authToken,
                 wrapper.device.id.toString(),
@@ -198,14 +198,14 @@ class DevicesRecycleAdapter(
                 constraintLayoutWater.visibility = View.GONE
                 cur.text = ""
                 showElectricDurationBtn.setOnClickListener {
-                    electricRequest(wrapper)
+                    electricRequest(wrapper, "Потребление за период")
                 }
                 resetElectricDurationBtn.setOnClickListener {
                     wrapper.startDate = UserDataService.defStartDate
                     wrapper.finishDate = UserDataService.defFinishDate
                     beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
                     endElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
-                    electricRequest(wrapper)
+                    electricRequest(wrapper, "Потребление за все время")
                 }
                 beginElectricDurationLbl.setOnClickListener{
                     showElectricDurationStartBtnClicked(wrapper)
@@ -235,14 +235,14 @@ class DevicesRecycleAdapter(
                 }
 
                 showWaterDurationBtn.setOnClickListener {
-                    waterRequest(wrapper)
+                    waterRequest(wrapper, "Потребление за период")
                 }
                 resetWaterDurationBtn.setOnClickListener{
                     wrapper.startDate = null
                     wrapper.finishDate = null
                     beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.defStartDate)
                     endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate ?: UserDataService.defFinishDate)
-                    waterRequest(wrapper)
+                    waterRequest(wrapper, "Потребление за все время")
                 }
 
                 beginWaterDurationLbl.setOnClickListener{
@@ -251,7 +251,6 @@ class DevicesRecycleAdapter(
                 endWaterDurationLbl.setOnClickListener{
                     showWaterDurationEndBtnClicked(wrapper)
                 }
-
             }
 
             deviceTitle.text = wrapper.device.type

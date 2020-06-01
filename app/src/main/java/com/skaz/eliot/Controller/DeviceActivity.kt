@@ -27,7 +27,6 @@ import android.widget.TextView
 import android.support.v4.widget.SwipeRefreshLayout
 import com.skaz.eliot.Model.DevicesRequest
 
-
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var adapter: DevicesRecycleAdapter
