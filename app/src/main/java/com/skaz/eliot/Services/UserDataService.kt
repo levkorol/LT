@@ -4,9 +4,9 @@ import com.skaz.eliot.Model.MyDate
 
 object UserDataService {
 
-    var fio = ""
-    var schet = ""
-    var address = ""
+    var fio: String? = ""
+    var schet: String? = ""
+    var address: String? = ""
 
     fun logout() {
         fio = ""

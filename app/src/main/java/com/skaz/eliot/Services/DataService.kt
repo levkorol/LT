@@ -1,5 +1,8 @@
 package com.skaz.eliot.Services
 
+import android.content.Context
+import android.content.Intent
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -37,6 +40,21 @@ object DataService {
                 AuthService.authToken = response.session
                 AuthService.isLoggedIn = true
                 AuthService.isLoggedOut = false
+            }
+            onResponse(response)
+        })
+    }
+
+
+    fun userInfoRequest(context: Context, request: UserInfoRequest, onResponse: (UserInfoResponse?) -> Unit) {
+        makeJsonObjectRequest<UserInfoRequest, UserInfoResponse>(URL_USER_INFO, request, object : TypeToken<UserInfoResponse>() {}.type, { response ->
+            if (response != null) {
+                UserDataService.fio = response.fio
+                UserDataService.schet = response.schet
+                UserDataService.address = response.address
+
+                val userDataChange = Intent(BROADCAST_USER_DATA_CHANGE)
+                LocalBroadcastManager.getInstance(context).sendBroadcast(userDataChange)
             }
             onResponse(response)
         })

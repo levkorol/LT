@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.skaz.eliot.Model.DevicesRequest
 import com.skaz.eliot.Model.LoginRequest
+import com.skaz.eliot.Model.UserInfoRequest
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
@@ -50,12 +51,9 @@ class MainActivity : AppCompatActivity() {
                 if (loginResponse != null) {
                     App.prefs.userEmail = login
                     App.prefs.password = password
-                    AuthService.userInfoRequest(AuthService.authToken, this) { getSession ->
-                        if (getSession) {
-                            AuthService.isLoggedIn = true
-                            AuthService.isLoggedOut = false
-                            DataService.deviceRequest(DevicesRequest(AuthService.authToken)){ complete ->
-                            }
+                    DataService.userInfoRequest(this, UserInfoRequest(AuthService.authToken)) { response ->
+                        if (response != null) {
+                            DataService.deviceRequest(DevicesRequest(AuthService.authToken)){ complete -> }
                         }
                     }
 
