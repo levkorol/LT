@@ -28,22 +28,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun deviceInfo() {
-        DataService.deviceRequest(AuthService.authToken) { response ->
-            if (response) {
-
-                Timer("SettingUp", false).schedule(2500) {
-                   spinnerStop()
-                    nextActivity()
-                }
-
-            } else {
-                enableSpinner(false)
-                Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
     fun spinnerStop() {
         Thread(Runnable {
             this@MainActivity.runOnUiThread {
