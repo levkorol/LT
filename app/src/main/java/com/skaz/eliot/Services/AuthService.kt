@@ -23,53 +23,6 @@ object AuthService {
     var isLoggedOut: Boolean = false
     var authToken: String = ""
 
-    fun loginRequest(login: String, password: String, complete: (Boolean) -> Unit) {
-
-        val jsonBody = JSONObject()
-        jsonBody.put("login", login)
-        jsonBody.put("password", password)
-        val requestBody = jsonBody.toString()
-
-        val loginRequest = object: JsonObjectRequest(Method.POST, URL_LOGIN, null, Response.Listener { response ->
-
-            try {
-
-                authToken = response.getString("session")
-                isLoggedIn = true
-                isLoggedOut = false
-
-                complete(true)
-            } catch (e: JSONException) {
-
-                complete(false)
-            }
-
-        }, Response.ErrorListener { error ->
-            Log.d("ERROR", "Could not login user: $error")
-            complete(false)
-        }) {
-
-            override fun getBodyContentType(): String {
-                return "application/json"
-            }
-
-            override fun getBody(): ByteArray {
-                return requestBody.toByteArray()
-            }
-
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers.put("Accept", "application/json; version=1")
-                headers.put("X-Platform", "Android")
-                return headers
-            }
-
-
-        }
-
-        App.prefs.requestQueue.add(loginRequest)
-    }
-
     fun userInfoRequest(session: String, context: Context, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()

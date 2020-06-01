@@ -6,11 +6,8 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Utilities.*
-import org.json.JSONException
-import org.json.JSONObject
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.collections.ArrayList
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.skaz.eliot.Model.*
@@ -21,25 +18,37 @@ object DataService {
     val dec = DecimalFormat("#.##")
 
     fun electricIndicationsRequest(request: ElectricIndicationsRequest, onResponse: (ElectricIndicationsResponse?) -> Unit) {
-        makeJsonObjectRequest<ElectricIndicationsRequest, ElectricIndicationsResponse>(URL_ELECTRIC_GET_INDICATIONS, request, onResponse);
+        makeJsonObjectRequest<ElectricIndicationsRequest, ElectricIndicationsResponse>(URL_ELECTRIC_GET_INDICATIONS, request,
+            object : TypeToken<ElectricIndicationsResponse>() {}.type, onResponse);
     }
 
     fun waterIndicationsRequest(request: WaterIndicationsRequest, onResponse: (WaterIndicationsResponse?) -> Unit) {
-        makeJsonObjectRequest<WaterIndicationsRequest, WaterIndicationsResponse>(URL_WATER_GET_INDICATIONS, request, onResponse)
+        makeJsonObjectRequest<WaterIndicationsRequest, WaterIndicationsResponse>(URL_WATER_GET_INDICATIONS, request,
+            object : TypeToken<WaterIndicationsResponse>() {}.type, onResponse)
     }
 
     fun deviceRequest(request: DevicesRequest, onResponse: (List<Device>?) -> Unit) {
         makeJsonArrayRequest(URL_DEVICES, request, object: TypeToken<List<Device>>() {}.type, onResponse)
     }
 
-    private fun <TRequest, TResponse> makeJsonObjectRequest(url: String, request: TRequest, onResponse: (TResponse?) -> Unit) {
+    fun loginRequest(request: LoginRequest, onResponse: (LoginResponse?) -> Unit) {
+        makeJsonObjectRequest<LoginRequest, LoginResponse>(URL_LOGIN, request, object : TypeToken<LoginResponse>() {}.type, { response ->
+            if (response != null && response.access && response.session != null) {
+                AuthService.authToken = response.session
+                AuthService.isLoggedIn = true
+                AuthService.isLoggedOut = false
+            }
+            onResponse(response)
+        })
+    }
+
+    private fun <TRequest, TResponse> makeJsonObjectRequest(url: String, request: TRequest, responseType: Type, onResponse: (TResponse?) -> Unit) {
         val gson = GsonBuilder().create()
         val requestBody = gson.toJson(request)
         val req = object :
-            JsonObjectRequest(Method.POST, url, null, Response.Listener { response ->
+            JsonObjectRequest(Method.POST, url, null, Response.Listener { result ->
                 try {
-                    val responseType = object : TypeToken<TResponse>() {}.type
-                    val response : TResponse = gson.fromJson(response.toString(), responseType)
+                    val response : TResponse = gson.fromJson(result.toString(), responseType)
                     onResponse(response)
                 } catch (e: Exception) {
                     onResponse(null)
@@ -71,9 +80,9 @@ object DataService {
         val gson = GsonBuilder().create()
         val requestBody = gson.toJson(request)
         val req = object :
-            JsonArrayRequest(Method.POST, url, null, Response.Listener { response ->
+            JsonArrayRequest(Method.POST, url, null, Response.Listener { result ->
                 try {
-                    val response : List<TResponse> = gson.fromJson(response.toString(), responseType)
+                    val response : List<TResponse> = gson.fromJson(result.toString(), responseType)
                     onResponse(response)
                 } catch (e: Exception) {
                     Log.d("ERROR", "Could not obtain request $requestBody: exception ${e.message}")

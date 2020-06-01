@@ -8,6 +8,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.skaz.eliot.Model.DevicesRequest
+import com.skaz.eliot.Model.LoginRequest
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
@@ -45,8 +46,8 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Выполняется вход в приложение", Toast.LENGTH_LONG).show()
         if (login.isNotEmpty() && password.isNotEmpty()) {
 
-            AuthService.loginRequest(login, password) { loginSuccess ->
-                if (loginSuccess) {
+            DataService.loginRequest(LoginRequest(login, password)) { loginResponse ->
+                if (loginResponse != null) {
                     App.prefs.userEmail = login
                     App.prefs.password = password
                     AuthService.userInfoRequest(AuthService.authToken, this) { getSession ->
