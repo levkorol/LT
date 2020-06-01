@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Utilities.*
-import java.text.DecimalFormat
 import java.util.*
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -17,8 +17,6 @@ import com.skaz.eliot.Model.*
 import java.lang.reflect.Type
 
 object DataService {
-
-    val dec = DecimalFormat("#.##")
 
     fun electricIndicationsRequest(request: ElectricIndicationsRequest, onResponse: (ElectricIndicationsResponse?) -> Unit) {
         makeJsonObjectRequest<ElectricIndicationsRequest, ElectricIndicationsResponse>(URL_ELECTRIC_GET_INDICATIONS, request,
@@ -90,6 +88,8 @@ object DataService {
                 return headers
             }
         }
+        req.retryPolicy = DefaultRetryPolicy(15000, 3,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         App.prefs.requestQueue.add(req)
     }
 
@@ -125,6 +125,8 @@ object DataService {
                 return headers
             }
         }
+        req.retryPolicy = DefaultRetryPolicy(15000, 3,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
         App.prefs.requestQueue.add(req)
     }
 }
