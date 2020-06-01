@@ -20,11 +20,9 @@ import com.skaz.eliot.R
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
 
-/*ыыы*/
 class DevicesRecycleAdapter(
     val context: Context,
-    private val devices: List<Device>
-    //  private val deviceWater: List<WaterIndicationsResponse>
+    devices: List<Device>
 ) : RecyclerView.Adapter<DevicesRecycleAdapter.Holder>() {
     private val deviceWrappers: List<DeviceWrapper> = devices.map { DeviceWrapper(it) }.toList()
 
