@@ -83,19 +83,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
-            mSwipe.isRefreshing = false
-            DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
-                if (devices != null) {
-                    mSwipe.isRefreshing = false
-                    adapter = DevicesRecycleAdapter(
-                        this,
-                        devices
-                    )
-                    devicesListView.adapter = adapter
-                } else {
-                    mSwipe.isRefreshing = false
-                }
-            }
+            refreshDataAdapter()
         }
     }
 
@@ -152,6 +140,8 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     private fun refreshDataAdapter() {
+        val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
+        mSwipe.isRefreshing = true
         DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
             if (devices != null) {
                 adapter = DevicesRecycleAdapter(
@@ -160,6 +150,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 )
                 devicesListView.adapter = adapter
             }
+            mSwipe.isRefreshing = false
         }
     }
 }
