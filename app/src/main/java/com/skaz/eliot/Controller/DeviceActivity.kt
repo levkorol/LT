@@ -24,44 +24,25 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import android.widget.TextView
-import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
-import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.DevicesRequest
 
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var startCal = Calendar.getInstance()
-    var endCal = Calendar.getInstance()
-    var yearStart = startCal.get(Calendar.YEAR)
-    var monthStart = startCal.get(Calendar.MONTH)
-    var dayStart = startCal.get(Calendar.DAY_OF_MONTH)
-    var yearEnd = endCal.get(Calendar.YEAR)
-    var monthEnd = endCal.get(Calendar.MONTH)
-    var dayEnd = endCal.get(Calendar.DAY_OF_MONTH)
     lateinit var adapter: DevicesRecycleAdapter
-
-    private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device)
 
-        adapter = DevicesRecycleAdapter(
-            this,
-            ArrayList<Device>()
-        )
-
         refreshDataAdapter()
-
-        devicesListView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
         devicesListView.setHasFixedSize(true)
 
-        toolbar.title = "Устройства абонента: ${adapter.itemCount}" //TODO sozdat sobitie
+        toolbar.title = "Устройства абонента: 0"
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -144,6 +125,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         mSwipe.isRefreshing = true
         DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
             if (devices != null) {
+                toolbar.title = "Устройства абонента: ${devices.count()}"
                 adapter = DevicesRecycleAdapter(
                     this,
                     devices
