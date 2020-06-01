@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.skaz.eliot.Model.DevicesRequest
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                         if (getSession) {
                             AuthService.isLoggedIn = true
                             AuthService.isLoggedOut = false
-                            DataService.deviceRequest(AuthService.authToken){ complete ->
+                            DataService.deviceRequest(DevicesRequest(AuthService.authToken)){ complete ->
                             }
                         }
                     }

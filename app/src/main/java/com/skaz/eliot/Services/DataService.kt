@@ -99,13 +99,9 @@ object DataService {
         makeJsonObjectRequest<WaterIndicationsRequest, WaterIndicationsResponse>(URL_WATER_GET_INDICATIONS, request, onResponse)
     }
 
-    fun deviceRequest(session: String, complete: (Boolean) -> Unit) {
-
-        val jsonBody = JSONObject()
-        jsonBody.put("session", session)
-        val requestBody = jsonBody.toString()
-        val builder = GsonBuilder()
-        val gson = builder.create()
+    fun deviceRequest(request: DevicesRequest, onResponse: (List<Device>?) -> Unit) {
+        val gson = GsonBuilder().create()
+        val requestBody = gson.toJson(request)
 
         val devicesRequest = object :
             JsonArrayRequest(Method.POST, URL_DEVICES, null, Response.Listener { response ->
@@ -115,16 +111,16 @@ object DataService {
                     val devs : List<Device>  = gson.fromJson(response.toString(), listType)
                     this.devices.addAll(devs)
 
-                    complete(true)
+                    onResponse(devs)
 
                 } catch (e: JSONException) {
 
-                    complete(false)
+                    onResponse(null)
                 }
 
             }, Response.ErrorListener { error ->
                 Log.d("ERROR", "Could not login user: $error")
-                complete(false)
+                onResponse(null)
             }) {
 
             override fun getBodyContentType(): String {

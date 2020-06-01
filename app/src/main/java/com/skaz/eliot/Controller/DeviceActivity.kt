@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import android.widget.TextView
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
+import com.skaz.eliot.Model.Device
+import com.skaz.eliot.Model.DevicesRequest
 import com.skaz.eliot.Services.AuthService
 
 
@@ -49,7 +51,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         adapter = DevicesRecycleAdapter(
             this,
-            DataService.devices
+            ArrayList<Device>()
         )
 
         refreshDataAdapter()
@@ -83,12 +85,12 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
             mSwipe.isRefreshing = false
-            DataService.deviceRequest(AuthService.authToken) { complete ->
-                if (complete) {
+            DataService.deviceRequest(DevicesRequest(AuthService.authToken)) { devices ->
+                if (devices != null) {
                     mSwipe.isRefreshing = false
                     adapter = DevicesRecycleAdapter(
                         this,
-                        DataService.devices
+                        devices
                     )
                     devicesListView.adapter = adapter
                 } else {
@@ -151,16 +153,14 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     private fun refreshDataAdapter() {
-        DataService.deviceRequest(AuthService.authToken) { complete ->
-            if (complete) {
+        DataService.deviceRequest(DevicesRequest(AuthService.authToken)) { devices ->
+            if (devices != null) {
                 adapter = DevicesRecycleAdapter(
                     this,
-                    DataService.devices
+                    devices
                 )
                 devicesListView.adapter = adapter
             }
         }
     }
-
-
 }
