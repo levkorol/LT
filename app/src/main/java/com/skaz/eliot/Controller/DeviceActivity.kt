@@ -50,13 +50,20 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device)
 
+        adapter = DevicesRecycleAdapter(
+            this,
+            DataService.devices
+        )
+
         refreshDataAdapter()
+
+        devicesListView.adapter = adapter
 
         val layoutManager = LinearLayoutManager(this)
         devicesListView.layoutManager = layoutManager
         devicesListView.setHasFixedSize(true)
 
-        toolbar.title = "Устройства абонента: 0"
+        toolbar.title = "Устройства абонента: ${adapter.itemCount}" //TODO sozdat sobitie
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar,
@@ -78,7 +85,19 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
-            refreshDataAdapter()
+            mSwipe.isRefreshing = false
+            DataService.deviceRequest(App.prefs.authToken) { complete ->
+                if (complete) {
+                    mSwipe.isRefreshing = false
+                    adapter = DevicesRecycleAdapter(
+                        this,
+                        DataService.devices
+                    )
+                    devicesListView.adapter = adapter
+                } else {
+                    mSwipe.isRefreshing = false
+                }
+            }
         }
     }
 
@@ -135,18 +154,16 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     private fun refreshDataAdapter() {
-        val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
-        mSwipe.isRefreshing = true
-        DataService.deviceRequest(App.prefs.authToken) { devices ->
-            mSwipe.isRefreshing = false
-            if (devices != null) {
+        DataService.deviceRequest(App.prefs.authToken) { complete ->
+            if (complete) {
                 adapter = DevicesRecycleAdapter(
                     this,
-                    devices
+                    DataService.devices
                 )
                 devicesListView.adapter = adapter
-                toolbar.title = "Устройства абонента: ${devices.count()}"
             }
         }
     }
+
+
 }
