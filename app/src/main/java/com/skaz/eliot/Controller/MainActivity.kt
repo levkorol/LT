@@ -2,7 +2,6 @@ package com.skaz.eliot.Controller
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -16,41 +15,21 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 class MainActivity : AppCompatActivity() {
-    val LOGIN = "login"
-    val PASSWORD = "password"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        loginSpinner.visibility = View.INVISIBLE
+        enableSpinner(false)
 
-        val sPref = getPreferences(Context.MODE_PRIVATE)
-        loginEmailTxt.setText(sPref.getString(LOGIN, ""))
-        loginPasswordText.setText(sPref.getString(PASSWORD, ""))
+        loginEmailTxt.setText(App.prefs.userEmail)
+        loginPasswordText.setText(App.prefs.password)
 
-        if (App.prefs.isLoggedIn) {
-
-            enableSpinner(true)
-            Toast.makeText(this, "Выполняется вход в приложение", Toast.LENGTH_LONG).show()
-
-                    AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
-                        if (getSession) {
-                            deviceInfo()
-                        } else {
-                            Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
-                            enableSpinner(false)
-                        }
-                    }
-                } else {
-            enableSpinner(false)
-          //  Toast.makeText(this, "Не удалось войти, введите логин и пароль", Toast.LENGTH_LONG).show()
-                }
+        if (!AuthService.isLoggedIn && !AuthService.isLoggedOut && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
+            login()
+        }
     }
 
-
-
     fun deviceInfo() {
-        DataService.deviceRequest(App.prefs.authToken) { response ->
+        DataService.deviceRequest(AuthService.authToken) { response ->
             if (response) {
 
                 Timer("SettingUp", false).schedule(2500) {
@@ -65,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     fun spinnerStop() {
         Thread(Runnable {
             this@MainActivity.runOnUiThread {
@@ -74,42 +52,44 @@ class MainActivity : AppCompatActivity() {
         }).start()
     }
 
-    fun loginBtnClicked(view: View) {
+    fun login() {
         enableSpinner(true)
         val login = loginEmailTxt.text.toString()
         val password = loginPasswordText.text.toString()
         hideKeyboard()
+        Toast.makeText(this, "Выполняется вход в приложение", Toast.LENGTH_LONG).show()
         if (login.isNotEmpty() && password.isNotEmpty()) {
 
             AuthService.loginRequest(login, password) { loginSuccess ->
-                    if (loginSuccess) {
-                        val sPref = getPreferences(Context.MODE_PRIVATE)
-                        val ed = sPref.edit()
-                        ed.putString(LOGIN, login)
-                        ed.putString(PASSWORD, password)
-                        ed.apply()
-                        AuthService.userInfoRequest(App.prefs.authToken, this) { getSession ->
-                            if (getSession) {
-                                App.prefs.isLoggedIn = true
-                                DataService.deviceRequest(App.prefs.authToken){ complete ->
-                                }
+                if (loginSuccess) {
+                    App.prefs.userEmail = login
+                    App.prefs.password = password
+                    AuthService.userInfoRequest(AuthService.authToken, this) { getSession ->
+                        if (getSession) {
+                            AuthService.isLoggedIn = true
+                            AuthService.isLoggedOut = false
+                            DataService.deviceRequest(AuthService.authToken){ complete ->
                             }
                         }
+                    }
 
-                        Timer("SettingUp", false).schedule(2500) {
-                            spinnerStop()
-                            nextActivity()
-                        }
+                    Timer("SettingUp", false).schedule(2500) {
+                        spinnerStop()
+                        nextActivity()
+                    }
                 } else {
-                        Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
                     errorToast()
                 }
             }
         } else {
             enableSpinner(false)
             Toast.makeText(this, "Please fill in both email and password", Toast.LENGTH_LONG).show()
-            }
+        }
+    }
 
+    fun loginBtnClicked(view: View) {
+        login()
     }
 
     fun nextActivity() {
@@ -124,7 +104,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             loginSpinner.visibility = View.INVISIBLE
         }
-
     }
 
     fun hideKeyboard() {

@@ -1,6 +1,5 @@
 package com.skaz.eliot.Services
 
-import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Model.MyDate
 
 object UserDataService {
@@ -11,8 +10,9 @@ object UserDataService {
 
     fun logout() {
         fio = ""
-        App.prefs.authToken = ""
-        App.prefs.isLoggedIn = false
+        AuthService.authToken = ""
+        AuthService.isLoggedIn = false
+        AuthService.isLoggedOut = true
         DataService.devices.clear()
     }
 

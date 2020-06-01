@@ -9,26 +9,17 @@ import com.android.volley.toolbox.Volley
 class SharedPrefs(context: Context) {
     val PREFS_FILENAME = "prefs"
     val prefs: SharedPreferences = context.getSharedPreferences(PREFS_FILENAME, 0)
-
-
-    val AUTH_TOKEN = "session"
-    val USER_EMAIL = "userEmail"
-    val IS_LOGGED_IN = "isLoggedIn"
-
-
-    var isLoggedIn: Boolean
-        get() = prefs.getBoolean(IS_LOGGED_IN, false)
-        set(value) = prefs.edit().putBoolean(IS_LOGGED_IN, value).apply()
-
-    var authToken: String
-        get() = prefs.getString(AUTH_TOKEN, "")
-        set(value) = prefs.edit().putString(AUTH_TOKEN, value).apply()
+    val LOGIN = "login"
+    val PASSWORD = "password"
 
     var userEmail: String
-        get() = prefs.getString(USER_EMAIL, "")
-        set(value) = prefs.edit().putString(USER_EMAIL, value).apply()
+        get() = prefs.getString(LOGIN, "")
+        set(value) = prefs.edit().putString(LOGIN, value).apply()
+
+    var password: String
+        get() = prefs.getString(PASSWORD, "")
+        set(value) = prefs.edit().putString(PASSWORD, value).apply()
 
     val requestQueue: RequestQueue = Volley.newRequestQueue(context)
-
 }
 

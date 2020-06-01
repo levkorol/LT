@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
 import com.skaz.eliot.Model.ElectricIndicationsRequest
+import com.skaz.eliot.Services.AuthService
 
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +87,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
             mSwipe.isRefreshing = false
-            DataService.deviceRequest(App.prefs.authToken) { complete ->
+            DataService.deviceRequest(AuthService.authToken) { complete ->
                 if (complete) {
                     mSwipe.isRefreshing = false
                     adapter = DevicesRecycleAdapter(
@@ -147,14 +148,14 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private val userDataChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
-            if (App.prefs.isLoggedIn) {
+            if (AuthService.isLoggedIn) {
                 nameLbl.text = UserDataService.fio
             }
         }
     }
 
     private fun refreshDataAdapter() {
-        DataService.deviceRequest(App.prefs.authToken) { complete ->
+        DataService.deviceRequest(AuthService.authToken) { complete ->
             if (complete) {
                 adapter = DevicesRecycleAdapter(
                     this,

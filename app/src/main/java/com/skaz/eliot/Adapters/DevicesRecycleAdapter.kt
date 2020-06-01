@@ -18,6 +18,7 @@ import com.skaz.eliot.Model.ElectricIndicationsRequest
 import com.skaz.eliot.Model.MyDate
 import com.skaz.eliot.Model.WaterIndicationsRequest
 import com.skaz.eliot.R
+import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
 import java.util.*
@@ -151,7 +152,7 @@ class DevicesRecycleAdapter(
         fun electricRequest(wrapper: DeviceWrapper) {
             electricDurationUseLbl.text = "Потребление за все время"
             val request = ElectricIndicationsRequest(
-                App.prefs.authToken,
+                AuthService.authToken,
                 wrapper.device.id.toString(),
                 UserDataService.dateToStrinJson(wrapper.startDate),
                 UserDataService.dateToStrinJson(wrapper.finishDate)
@@ -174,7 +175,7 @@ class DevicesRecycleAdapter(
         fun waterRequest(wrapper: DeviceWrapper) {
             durationUseLblWater.text = "Потребление за все время"
             val request = WaterIndicationsRequest(
-                App.prefs.authToken,
+                AuthService.authToken,
                 wrapper.device.id.toString(),
                 UserDataService.dateToStrinJson(wrapper.startDate),
                 UserDataService.dateToStrinJson(wrapper.finishDate)

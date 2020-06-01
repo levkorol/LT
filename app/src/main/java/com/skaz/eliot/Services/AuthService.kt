@@ -19,6 +19,10 @@ import java.lang.reflect.Method
 
 object AuthService {
 
+    var isLoggedIn: Boolean = false
+    var isLoggedOut: Boolean = false
+    var authToken: String = ""
+
 
 
     fun loginRequest(login: String, password: String, complete: (Boolean) -> Unit) {
@@ -32,8 +36,9 @@ object AuthService {
 
             try {
 
-                App.prefs.authToken = response.getString("session")
-                App.prefs.isLoggedIn = true
+                authToken = response.getString("session")
+                isLoggedIn = true
+                isLoggedOut = false
 
                 complete(true)
             } catch (e: JSONException) {
