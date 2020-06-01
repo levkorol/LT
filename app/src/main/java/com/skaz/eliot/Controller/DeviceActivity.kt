@@ -28,7 +28,6 @@ import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.DevicesRequest
-import com.skaz.eliot.Services.AuthService
 
 
 class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -85,7 +84,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.setOnRefreshListener {
             mSwipe.isRefreshing = false
-            DataService.deviceRequest(DevicesRequest(AuthService.authToken)) { devices ->
+            DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
                 if (devices != null) {
                     mSwipe.isRefreshing = false
                     adapter = DevicesRecycleAdapter(
@@ -146,14 +145,14 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private val userDataChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
-            if (AuthService.isLoggedIn) {
+            if (UserDataService.isLoggedIn) {
                 nameLbl.text = UserDataService.fio
             }
         }
     }
 
     private fun refreshDataAdapter() {
-        DataService.deviceRequest(DevicesRequest(AuthService.authToken)) { devices ->
+        DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
             if (devices != null) {
                 adapter = DevicesRecycleAdapter(
                     this,

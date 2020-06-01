@@ -4,15 +4,18 @@ import com.skaz.eliot.Model.MyDate
 
 object UserDataService {
 
+    var isLoggedIn: Boolean = false
+    var isLoggedOut: Boolean = false
+    var authToken: String = ""
     var fio: String? = ""
     var schet: String? = ""
     var address: String? = ""
 
     fun logout() {
         fio = ""
-        AuthService.authToken = ""
-        AuthService.isLoggedIn = false
-        AuthService.isLoggedOut = true
+        authToken = ""
+        isLoggedIn = false
+        isLoggedOut = true
     }
 
     val defStartDate = MyDate(2019, 0, 1)

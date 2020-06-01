@@ -7,12 +7,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.skaz.eliot.Model.DevicesRequest
 import com.skaz.eliot.Model.LoginRequest
 import com.skaz.eliot.Model.UserInfoRequest
 import com.skaz.eliot.R
-import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
+import com.skaz.eliot.Services.UserDataService
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.concurrent.schedule
@@ -26,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         loginEmailTxt.setText(App.prefs.userEmail)
         loginPasswordText.setText(App.prefs.password)
 
-        if (!AuthService.isLoggedIn && !AuthService.isLoggedOut && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
+        if (!UserDataService.isLoggedIn && !UserDataService.isLoggedOut && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
             login()
         }
     }
@@ -51,10 +50,7 @@ class MainActivity : AppCompatActivity() {
                 if (loginResponse != null) {
                     App.prefs.userEmail = login
                     App.prefs.password = password
-                    DataService.userInfoRequest(this, UserInfoRequest(AuthService.authToken)) { response ->
-                        if (response != null) {
-                            DataService.deviceRequest(DevicesRequest(AuthService.authToken)){ complete -> }
-                        }
+                    DataService.userInfoRequest(this, UserInfoRequest(UserDataService.authToken)) { response ->
                     }
 
                     Timer("SettingUp", false).schedule(2500) {
