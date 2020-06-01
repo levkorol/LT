@@ -1,7 +1,5 @@
 package com.skaz.eliot.Controller
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -26,10 +24,8 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 import android.widget.TextView
-import kotlinx.android.synthetic.main.content_main_devices.*
 import java.util.*
 import android.support.v4.widget.SwipeRefreshLayout
-import com.skaz.eliot.Model.ElectricIndicationsRequest
 import com.skaz.eliot.Services.AuthService
 
 

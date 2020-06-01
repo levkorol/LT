@@ -13,5 +13,4 @@ data class DeviceAllData(
     var volt_3: Double?,
     var cur: Double?,
     var notice: String?,
-    var error: String?
-) : Base()
+    var error: String?)

@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.ElectricIndicationsRequest
 import com.skaz.eliot.Model.MyDate
@@ -21,7 +20,7 @@ import com.skaz.eliot.R
 import com.skaz.eliot.Services.AuthService
 import com.skaz.eliot.Services.DataService
 import com.skaz.eliot.Services.UserDataService
-import java.util.*
+
 /*ыыы*/
 class DevicesRecycleAdapter(
     val context: Context,

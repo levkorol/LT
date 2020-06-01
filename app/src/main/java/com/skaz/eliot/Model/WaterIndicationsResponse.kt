@@ -4,5 +4,4 @@ data class WaterIndicationsResponse (
     val value: Double?,
     val notice: String?,
     val date: String?,
-    val error: String?
-) : Base()
+    val error: String?)

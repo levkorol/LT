@@ -6,5 +6,4 @@ data class ElectricIndicationsResponse(
     val t1_date: String?,
     val t2_date: String?,
     val notice: String?,
-    val error: String?
-) : Base()
+    val error: String?)

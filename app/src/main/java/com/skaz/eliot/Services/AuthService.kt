@@ -23,8 +23,6 @@ object AuthService {
     var isLoggedOut: Boolean = false
     var authToken: String = ""
 
-
-
     fun loginRequest(login: String, password: String, complete: (Boolean) -> Unit) {
 
         val jsonBody = JSONObject()
