@@ -18,7 +18,6 @@ import java.lang.reflect.Type
 
 object DataService {
 
-    val devices = ArrayList<Device>()
     val dec = DecimalFormat("#.##")
 
     fun electricIndicationsRequest(request: ElectricIndicationsRequest, onResponse: (ElectricIndicationsResponse?) -> Unit) {

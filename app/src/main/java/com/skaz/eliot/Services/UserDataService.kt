@@ -13,7 +13,6 @@ object UserDataService {
         AuthService.authToken = ""
         AuthService.isLoggedIn = false
         AuthService.isLoggedOut = true
-        DataService.devices.clear()
     }
 
     val defStartDate = MyDate(2019, 0, 1)
