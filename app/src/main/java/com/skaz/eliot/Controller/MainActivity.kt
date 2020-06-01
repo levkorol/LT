@@ -50,8 +50,7 @@ class MainActivity : AppCompatActivity() {
                 if (loginResponse != null) {
                     App.prefs.userEmail = login
                     App.prefs.password = password
-                    DataService.userInfoRequest(this, UserInfoRequest(UserDataService.authToken)) { response ->
-                    }
+                    DataService.userInfoRequest(this, UserInfoRequest(UserDataService.authToken)) { response -> }
 
                     Timer("SettingUp", false).schedule(2500) {
                         spinnerStop()

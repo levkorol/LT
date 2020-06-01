@@ -1,6 +1,6 @@
 package com.skaz.eliot.Model
 
-data class DeviceAllData(
+data class DeviceLastData(
     var date: String?,
     var pw_1: Double?,
     var pw_2: Double?,

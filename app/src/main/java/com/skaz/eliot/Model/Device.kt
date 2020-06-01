@@ -6,5 +6,5 @@ data class Device (
     val type: String,
     val category: String,
     val device_info: List<DeviceInfo>,
-    val last_data: DeviceAllData?,
-    val accumulated_en: DeviceTariff?)
+    val last_data: DeviceLastData?,
+    val accumulated_en: DeviceAccumulatedEn?)

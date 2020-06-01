@@ -1,6 +1,6 @@
 package com.skaz.eliot.Model
 
-data class DeviceTariff(
+data class DeviceAccumulatedEn(
     var t1: Double,
     var t2: Double,
     var t1_date: String,

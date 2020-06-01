@@ -45,7 +45,6 @@ object DataService {
         })
     }
 
-
     fun userInfoRequest(context: Context, request: UserInfoRequest, onResponse: (UserInfoResponse?) -> Unit) {
         makeJsonObjectRequest<UserInfoRequest, UserInfoResponse>(URL_USER_INFO, request, object : TypeToken<UserInfoResponse>() {}.type, { response ->
             if (response != null) {
