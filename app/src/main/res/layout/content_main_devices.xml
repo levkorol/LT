@@ -164,7 +164,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/resetElectricDurationBtn"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notice_msg"
+                app:layout_constraintTop_toBottomOf="@+id/notice_msg_electric"
                 app:srcCompat="@color/colorSelect" />
 
         <TextView
@@ -585,7 +585,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/phaseNumTxt2" />
 
         <TextView
-                android:id="@+id/notice_msg"
+                android:id="@+id/notice_msg_electric"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

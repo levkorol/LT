@@ -93,6 +93,8 @@ class DevicesRecycleAdapter(
         val electricDurationUseLbl = itemView.findViewById<TextView>(R.id.electricDurationUseLbl)
         val durationUseLblWater = itemView.findViewById<TextView>(R.id.durationUseLblWater)
         val cur = itemView.findViewById<TextView>(R.id.textView3Water)
+        val notice_msg_electric = itemView.findViewById<TextView>(R.id.notice_msg_electric)
+        val notice_msg_water = itemView.findViewById<TextView>(R.id.notice_msg_water)
 
 
         fun showElectricDurationStartBtnClicked(wrapper: DeviceWrapper) {
@@ -172,9 +174,14 @@ class DevicesRecycleAdapter(
 
                 } else if (response.error != null) {
                     showAlter(response.error)
-                } else if (response.notice != null) {
-                    showAlter(response.notice)
                 } else {
+                    if (response.notice != null) {
+                        notice_msg_electric.visibility = View.VISIBLE
+                        notice_msg_electric.text = response.notice
+                    } else {
+                        notice_msg_electric.visibility = View.GONE
+                        notice_msg_electric.text = ""
+                    }
                     dayUseLbl.text = "${response.t1} кВт*ч"
                     nightUseLbl.text = "${response.t2} кВт*ч"
                     allUseLbl.text = "${response.t1 + response.t2} кВт*ч"
@@ -195,9 +202,14 @@ class DevicesRecycleAdapter(
 
                 } else if (response.error != null) {
                     showAlter(response.error)
-                } else if (response.notice != null) {
-                    showAlter(response.notice)
                 } else {
+                    if (response.notice != null) {
+                        notice_msg_water.visibility = View.VISIBLE
+                        notice_msg_water.text = response.notice
+                    } else {
+                        notice_msg_water.visibility = View.GONE
+                        notice_msg_water.text = ""
+                    }
                     cur.text = "${response.value} М³"
                 }
             }
@@ -211,6 +223,7 @@ class DevicesRecycleAdapter(
                 constraintLayoutElectrical.visibility = View.VISIBLE
                 constraintLayoutWater.visibility = View.GONE
                 cur.text = ""
+                notice_msg_electric.visibility = View.GONE
                 showElectricDurationBtn.setOnClickListener {
                     electricRequest(wrapper, "Потребление за период")
                 }
@@ -230,7 +243,7 @@ class DevicesRecycleAdapter(
             } else if (wrapper.device.category == "water") {
                 constraintLayoutElectrical.visibility = View.GONE
                 constraintLayoutWater.visibility = View.VISIBLE
-
+                notice_msg_water.visibility = View.GONE
                 if (wrapper.device.device_info.isNotEmpty()) {
                     when {
                         wrapper.device.device_info[0].type == "hot" -> icWater.setImageResource(R.drawable.red)
