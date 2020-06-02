@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import com.skaz.eliot.Model.DevicesRequest
 import com.skaz.eliot.Model.LoginRequest
 import com.skaz.eliot.Model.UserInfoRequest
 import com.skaz.eliot.R
@@ -38,8 +39,7 @@ class MainActivity : AppCompatActivity() {
         }).start()
     }
 
-    fun login() {
-        enableSpinner(true)
+    private fun login2() {
         val login = loginEmailTxt.text.toString()
         val password = loginPasswordText.text.toString()
         hideKeyboard()
@@ -50,11 +50,15 @@ class MainActivity : AppCompatActivity() {
                 if (loginResponse != null) {
                     App.prefs.userEmail = login
                     App.prefs.password = password
-                    DataService.userInfoRequest(this, UserInfoRequest(UserDataService.authToken)) { response -> }
-
-                    Timer("SettingUp", false).schedule(2500) {
-                        spinnerStop()
-                        nextActivity()
+                    App.prefs.session = loginResponse.session ?: ""
+                    DataService.userInfoRequest(this, UserInfoRequest(App.prefs.session)) { response ->
+                        if (response != null) {
+                            spinnerStop()
+                            nextActivity()
+                        } else {
+                            Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
+                            errorToast()
+                        }
                     }
                 } else {
                     Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
@@ -64,6 +68,22 @@ class MainActivity : AppCompatActivity() {
         } else {
             enableSpinner(false)
             Toast.makeText(this, "Please fill in both email and password", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun login() {
+        enableSpinner(true)
+        if (App.prefs.session.isNotEmpty()) {
+            DataService.userInfoRequest(this, UserInfoRequest(App.prefs.session)) { response ->
+                if (response == null || response.access == false) {
+                    login2()
+                } else {
+                    spinnerStop()
+                    nextActivity()
+                }
+            }
+        } else {
+            login2()
         }
     }
 

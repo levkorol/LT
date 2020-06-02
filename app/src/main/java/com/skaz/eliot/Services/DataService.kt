@@ -34,8 +34,7 @@ object DataService {
 
     fun loginRequest(request: LoginRequest, onResponse: (LoginResponse?) -> Unit) {
         makeJsonObjectRequest<LoginRequest, LoginResponse>(URL_LOGIN, request, object : TypeToken<LoginResponse>() {}.type, { response ->
-            if (response != null && response.access && response.session != null) {
-                UserDataService.authToken = response.session
+            if (response != null && response.access) {
                 UserDataService.isLoggedIn = true
                 UserDataService.isLoggedOut = false
             }

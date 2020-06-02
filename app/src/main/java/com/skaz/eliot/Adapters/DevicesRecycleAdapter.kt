@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.skaz.eliot.Controller.App
 import com.skaz.eliot.Model.Device
 import com.skaz.eliot.Model.ElectricIndicationsRequest
 import com.skaz.eliot.Model.MyDate
@@ -164,7 +165,7 @@ class DevicesRecycleAdapter(
         fun electricRequest(wrapper: DeviceWrapper, messageText: String) {
             electricDurationUseLbl.text = messageText
             val request = ElectricIndicationsRequest(
-                UserDataService.authToken,
+                App.prefs.session,
                 wrapper.device.id.toString(),
                 UserDataService.dateToStrinJson(wrapper.startDate),
                 UserDataService.dateToStrinJson(wrapper.finishDate)
@@ -192,7 +193,7 @@ class DevicesRecycleAdapter(
         fun waterRequest(wrapper: DeviceWrapper, messageText: String) {
             durationUseLblWater.text = messageText
             val request = WaterIndicationsRequest(
-                UserDataService.authToken,
+                App.prefs.session,
                 wrapper.device.id.toString(),
                 UserDataService.dateToStrinJson(wrapper.startDate),
                 UserDataService.dateToStrinJson(wrapper.finishDate)

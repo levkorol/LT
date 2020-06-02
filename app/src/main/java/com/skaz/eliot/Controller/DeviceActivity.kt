@@ -122,7 +122,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     private fun refreshDataAdapter() {
         val mSwipe = findViewById<View>(R.id.swipeRefreshLayout) as SwipeRefreshLayout
         mSwipe.isRefreshing = true
-        DataService.deviceRequest(DevicesRequest(UserDataService.authToken)) { devices ->
+        DataService.deviceRequest(DevicesRequest(App.prefs.session)) { devices ->
             if (devices != null) {
                 toolbar.title = "Устройства абонента: ${devices.count()}"
                 adapter = DevicesRecycleAdapter(
