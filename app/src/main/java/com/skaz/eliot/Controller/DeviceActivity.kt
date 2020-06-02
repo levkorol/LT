@@ -113,7 +113,7 @@ class DeviceActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
     private val userDataChangeReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent?) {
-            if (UserDataService.isLoggedIn) {
+            if (App.prefs.session.isNotEmpty()) {
                 nameLbl.text = UserDataService.fio
             }
         }

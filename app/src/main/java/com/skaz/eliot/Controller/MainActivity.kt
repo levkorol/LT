@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         loginEmailTxt.setText(App.prefs.userEmail)
         loginPasswordText.setText(App.prefs.password)
 
-        if (!UserDataService.isLoggedIn && !UserDataService.isLoggedOut && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
+        if (App.prefs.session.isNotEmpty() && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
             login()
         }
     }

@@ -5,16 +5,12 @@ import com.skaz.eliot.Model.MyDate
 
 object UserDataService {
 
-    var isLoggedIn: Boolean = false
-    var isLoggedOut: Boolean = false
     var fio: String? = ""
     var schet: String? = ""
     var address: String? = ""
 
     fun logout() {
         fio = ""
-        isLoggedIn = false
-        isLoggedOut = true
         App.prefs.session = ""
     }
 
