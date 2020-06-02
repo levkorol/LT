@@ -100,7 +100,14 @@ class DevicesRecycleAdapter(
                 DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
                     beginElectricDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
                     wrapper.startDate = MyDate(year, month, day)
-                }, wrapper.startDate!!.year, wrapper.startDate!!.month, wrapper.startDate!!.day)
+                    if (wrapper.finishDate == null) {
+                        wrapper.finishDate = UserDataService.defFinishDate
+                        endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
+                    }
+                },
+                    wrapper.startDate?.year ?: UserDataService.defStartDate.year,
+                    wrapper.startDate?.month ?: UserDataService.defStartDate.month,
+                    wrapper.startDate?.day ?: UserDataService.defStartDate.day)
             dpd.show()
         }
 
@@ -109,7 +116,14 @@ class DevicesRecycleAdapter(
                 DatePickerDialog(context, DatePickerDialog.OnDateSetListener { view, year, month, day ->
                     endElectricDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
                     wrapper.finishDate = MyDate(year, month, day)
-                }, wrapper.finishDate!!.year, wrapper.finishDate!!.month, wrapper.finishDate!!.day)
+                    if (wrapper.startDate == null) {
+                        wrapper.startDate = UserDataService.defStartDate
+                        beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
+                    }
+                },
+                    wrapper.finishDate?.year ?: UserDataService.defFinishDate.year,
+                    wrapper.finishDate?.month ?: UserDataService.defFinishDate.month,
+                    wrapper.finishDate?.day ?: UserDataService.defFinishDate.day)
             dpd.show()
         }
 
@@ -139,9 +153,9 @@ class DevicesRecycleAdapter(
                         beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
                     }
                 },
-                    wrapper.startDate?.year ?: UserDataService.defFinishDate.year,
-                    wrapper.startDate?.month ?: UserDataService.defFinishDate.month,
-                    wrapper.startDate?.day ?: UserDataService.defFinishDate.day)
+                    wrapper.finishDate?.year ?: UserDataService.defFinishDate.year,
+                    wrapper.finishDate?.month ?: UserDataService.defFinishDate.month,
+                    wrapper.finishDate?.day ?: UserDataService.defFinishDate.day)
             dpd.show()
         }
 
@@ -201,10 +215,10 @@ class DevicesRecycleAdapter(
                     electricRequest(wrapper, "Потребление за период")
                 }
                 resetElectricDurationBtn.setOnClickListener {
-                    wrapper.startDate = UserDataService.defStartDate
-                    wrapper.finishDate = UserDataService.defFinishDate
-                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
-                    endElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
+                    wrapper.startDate = null
+                    wrapper.finishDate = null
+                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.defStartDate)
+                    endElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate ?: UserDataService.defFinishDate)
                     electricRequest(wrapper, "Потребление за все время")
                 }
                 beginElectricDurationLbl.setOnClickListener{
