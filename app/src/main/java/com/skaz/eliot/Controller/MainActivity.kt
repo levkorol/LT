@@ -1,23 +1,28 @@
 package com.skaz.eliot.Controller
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.skaz.eliot.Model.DevicesRequest
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.credentials.Credential
+import com.google.android.gms.auth.api.credentials.CredentialRequest
+import com.google.android.gms.auth.api.credentials.Credentials
+import com.google.android.gms.common.api.ResolvableApiException
 import com.skaz.eliot.Model.LoginRequest
 import com.skaz.eliot.Model.UserInfoRequest
 import com.skaz.eliot.R
 import com.skaz.eliot.Services.DataService
-import com.skaz.eliot.Services.UserDataService
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
-import kotlin.concurrent.schedule
+
 
 class MainActivity : AppCompatActivity() {
+    val RC_SAVE = 11
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,6 +33,10 @@ class MainActivity : AppCompatActivity() {
 
         if (App.prefs.session.isNotEmpty() && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
             login()
+            //https://developers.google.com/identity/smartlock-passwords/android/retrieve-credentials
+            //https://developers.google.com/identity/smartlock-passwords/android/store-credentials
+            //https://developers.google.com/identity/smartlock-passwords/android/retrieve-hints
+
         }
     }
 
@@ -37,6 +46,40 @@ class MainActivity : AppCompatActivity() {
                 enableSpinner(false)
             }
         }).start()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            RC_SAVE -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.d("INFO", "Credential Save: OK")
+                    val login = loginEmailTxt.text.toString()
+                    val password = loginPasswordText.text.toString()
+                    saveCredentials(login, password) { }
+                } else {
+                    Log.e("ERROR", "Credential Save: NOT OK")
+                }
+            }
+        }
+    }
+
+    private fun saveCredentials(login: String, password: String, onError: (rae: ResolvableApiException) -> Unit) {
+        val credential = Credential.Builder(login)
+            .setPassword(password)
+            .build()
+        val client = Credentials.getClient(this)
+        client.save(credential).addOnCompleteListener {task ->
+            if (task.isSuccessful) {
+                Log.d("INFO", "Successfully saved login $login and password $password")
+            } else {
+                if (task.exception is ResolvableApiException) {
+                    val rae = task.exception as ResolvableApiException
+                    onError(rae)
+                }
+                errorToast("Error saving login $login and password $password. Error = ${task.exception?.message}")
+            }
+        }
     }
 
     private fun login2() {
@@ -51,18 +94,22 @@ class MainActivity : AppCompatActivity() {
                     App.prefs.userEmail = login
                     App.prefs.password = password
                     App.prefs.session = loginResponse.session ?: ""
+
+                    saveCredentials(login, password) { rae ->
+                        rae.startResolutionForResult(this, RC_SAVE)
+                    }
+
                     DataService.userInfoRequest(this, UserInfoRequest(App.prefs.session)) { response ->
                         if (response != null) {
                             spinnerStop()
                             nextActivity()
                         } else {
-                            Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
-                            errorToast()
+                            errorToast("Error: Wrong password or email")
                         }
                     }
                 } else {
                     Toast.makeText(this, "Error: Wrong password or email", Toast.LENGTH_LONG).show()
-                    errorToast()
+                    errorToast("Something went wrong, please try again")
                 }
             }
         } else {
@@ -115,8 +162,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun errorToast() {
-        Toast.makeText(this, "Something went wrong, please try again", Toast.LENGTH_LONG).show()
+    fun errorToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         enableSpinner(false)
     }
 }
