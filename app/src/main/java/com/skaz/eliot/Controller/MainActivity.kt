@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     val rae = task.exception as ResolvableApiException
                     onError(rae)
                 }
-                errorToast("Error saving login $login and password $password. Error = ${task.exception?.message}")
+                Log.d("ERROR", "Error saving login $login and password $password. Error = ${task.exception?.message}")
             }
         }
     }
