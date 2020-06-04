@@ -716,7 +716,7 @@
         <Button
                 android:id="@+id/showWaterDurationBtn"
                 style="@style/AppTheme.RoundedCornerMaterialButton2"
-                android:layout_width="104dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/exo_2_medium"
