@@ -1,17 +1,18 @@
 package com.skaz.eliot.Controller
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender.SendIntentException
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.credentials.Credential
+import com.google.android.gms.auth.api.credentials.*
 import com.google.android.gms.auth.api.credentials.CredentialRequest
-import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.gms.common.api.ResolvableApiException
 import com.skaz.eliot.Model.LoginRequest
 import com.skaz.eliot.Model.UserInfoRequest
@@ -22,21 +23,41 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     val RC_SAVE = 11
+    val RC_HINT = 12
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         enableSpinner(false)
 
-        loginEmailTxt.setText(App.prefs.userEmail)
-        loginPasswordText.setText(App.prefs.password)
-
-        if (App.prefs.session.isNotEmpty() && loginEmailTxt.text.isNotEmpty() && loginPasswordText.text.isNotEmpty()) {
-            login()
+        if (App.prefs.session.isNotEmpty()) {
+            trySingInSession()
             //https://developers.google.com/identity/smartlock-passwords/android/retrieve-credentials
             //https://developers.google.com/identity/smartlock-passwords/android/store-credentials
             //https://developers.google.com/identity/smartlock-passwords/android/retrieve-hints
 
+        } else {
+            requestLoginPasswordHint()
+        }
+    }
+
+    private fun requestLoginPasswordHint() {
+        val hintRequest = HintRequest.Builder()
+            .setHintPickerConfig(
+                CredentialPickerConfig.Builder()
+                    .setShowCancelButton(true)
+                    .build()
+            )
+            .setEmailAddressIdentifierSupported(true)
+            .setAccountTypes(IdentityProviders.GOOGLE)
+            .build()
+
+        val client = Credentials.getClient(this)
+        val intent: PendingIntent = client.getHintPickerIntent(hintRequest)
+        try {
+            startIntentSenderForResult(intent.intentSender, RC_HINT, null, 0, 0, 0)
+        } catch (e: SendIntentException) {
+            Log.e("ERROR", "Could not start hint picker Intent", e)
         }
     }
 
@@ -61,6 +82,26 @@ class MainActivity : AppCompatActivity() {
                     Log.e("ERROR", "Credential Save: NOT OK")
                 }
             }
+            RC_HINT -> {
+                if (resultCode == RESULT_OK) {
+                    val client = Credentials.getClient(this)
+                    val credectialRequest = CredentialRequest.Builder()
+                        .setPasswordLoginSupported(true)
+                        .build()
+                    client.request(credectialRequest).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val credential = task.result?.credential
+                            if (credential != null) {
+                                loginEmailTxt.setText(credential.id)
+                                loginPasswordText.setText(credential.password)
+                            }
+                        }
+                    }
+                    Log.e("INFO", "Credential hint: OK")
+                } else {
+                    Log.e("INFO", "Credential hint: NOT OK")
+                }
+            }
         }
     }
 
@@ -82,17 +123,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun login2() {
+    private fun login() {
         val login = loginEmailTxt.text.toString()
         val password = loginPasswordText.text.toString()
         hideKeyboard()
+        enableSpinner(true)
         Toast.makeText(this, "Выполняется вход в приложение", Toast.LENGTH_LONG).show()
         if (login.isNotEmpty() && password.isNotEmpty()) {
 
             DataService.loginRequest(LoginRequest(login, password)) { loginResponse ->
                 if (loginResponse != null) {
-                    App.prefs.userEmail = login
-                    App.prefs.password = password
                     App.prefs.session = loginResponse.session ?: ""
 
                     saveCredentials(login, password) { rae ->
@@ -118,19 +158,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun login() {
+    private fun trySingInSession() {
         enableSpinner(true)
-        if (App.prefs.session.isNotEmpty()) {
-            DataService.userInfoRequest(this, UserInfoRequest(App.prefs.session)) { response ->
-                if (response == null || response.access == false) {
-                    login2()
-                } else {
-                    spinnerStop()
-                    nextActivity()
-                }
+        DataService.userInfoRequest(this, UserInfoRequest(App.prefs.session)) { response ->
+            spinnerStop()
+            if (response != null && response.access != false) {
+                nextActivity()
+            } else {
+                requestLoginPasswordHint()
             }
-        } else {
-            login2()
         }
     }
 
