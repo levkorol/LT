@@ -14,7 +14,11 @@ object UserDataService {
         App.prefs.session = ""
     }
 
-    val defStartDate = MyDate(2019, 0, 1)
+    fun getDefStartDate() : MyDate {
+        val now = MyDate.now()
+        return MyDate(now.year, now.month, 1);
+    }
+
     val defFinishDate = MyDate.now()
 
     fun dateToStringHuman(year: Int, month: Int, day: Int) : String {

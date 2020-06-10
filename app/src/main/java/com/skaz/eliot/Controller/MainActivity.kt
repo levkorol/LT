@@ -32,10 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         if (App.prefs.session.isNotEmpty()) {
             trySingInSession()
-            //https://developers.google.com/identity/smartlock-passwords/android/retrieve-credentials
-            //https://developers.google.com/identity/smartlock-passwords/android/store-credentials
-            //https://developers.google.com/identity/smartlock-passwords/android/retrieve-hints
-
         } else {
             requestLoginPasswordHint()
         }

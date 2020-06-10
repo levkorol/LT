@@ -108,9 +108,9 @@ class DevicesRecycleAdapter(
                         endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
                     }
                 },
-                    wrapper.startDate?.year ?: UserDataService.defStartDate.year,
-                    wrapper.startDate?.month ?: UserDataService.defStartDate.month,
-                    wrapper.startDate?.day ?: UserDataService.defStartDate.day)
+                    wrapper.startDate?.year ?: UserDataService.getDefStartDate().year,
+                    wrapper.startDate?.month ?: UserDataService.getDefStartDate().month,
+                    wrapper.startDate?.day ?: UserDataService.getDefStartDate().day)
             dpd.show()
         }
 
@@ -120,7 +120,7 @@ class DevicesRecycleAdapter(
                     endElectricDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
                     wrapper.finishDate = MyDate(year, month, day)
                     if (wrapper.startDate == null) {
-                        wrapper.startDate = UserDataService.defStartDate
+                        wrapper.startDate = UserDataService.getDefStartDate()
                         beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
                     }
                 },
@@ -140,9 +140,9 @@ class DevicesRecycleAdapter(
                         endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate)
                     }
                 },
-                    wrapper.startDate?.year ?: UserDataService.defStartDate.year,
-                    wrapper.startDate?.month ?: UserDataService.defStartDate.month,
-                    wrapper.startDate?.day ?: UserDataService.defStartDate.day)
+                    wrapper.startDate?.year ?: UserDataService.getDefStartDate().year,
+                    wrapper.startDate?.month ?: UserDataService.getDefStartDate().month,
+                    wrapper.startDate?.day ?: UserDataService.getDefStartDate().day)
             dpd.show()
         }
 
@@ -152,7 +152,7 @@ class DevicesRecycleAdapter(
                     endWaterDurationLbl.text = UserDataService.dateToStringHuman(year, month, day)
                     wrapper.finishDate = MyDate(year, month, day)
                     if (wrapper.startDate == null) {
-                        wrapper.startDate = UserDataService.defStartDate
+                        wrapper.startDate = UserDataService.getDefStartDate()
                         beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate)
                     }
                 },
@@ -231,7 +231,7 @@ class DevicesRecycleAdapter(
                 resetElectricDurationBtn.setOnClickListener {
                     wrapper.startDate = null
                     wrapper.finishDate = null
-                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.defStartDate)
+                    beginElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.getDefStartDate())
                     endElectricDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate ?: UserDataService.defFinishDate)
                     electricRequest(wrapper, "Потребление за все время")
                 }
@@ -268,7 +268,7 @@ class DevicesRecycleAdapter(
                 resetWaterDurationBtn.setOnClickListener{
                     wrapper.startDate = null
                     wrapper.finishDate = null
-                    beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.defStartDate)
+                    beginWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.startDate ?: UserDataService.getDefStartDate())
                     endWaterDurationLbl.text = UserDataService.dateToStringHuman(wrapper.finishDate ?: UserDataService.defFinishDate)
                     waterRequest(wrapper, "Потребление за все время")
                 }
@@ -306,9 +306,9 @@ class DevicesRecycleAdapter(
             numPhase_1.text = "1"
             numPhase_2.text = "2"
             numPhase_3.text = "3"
-            beginWaterDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defStartDate)
+            beginWaterDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.getDefStartDate())
             endWaterDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defFinishDate)
-            beginElectricDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defStartDate)
+            beginElectricDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.getDefStartDate())
             endElectricDurationLbl.text = UserDataService.dateToStringHuman(UserDataService.defFinishDate)
         }
     }
