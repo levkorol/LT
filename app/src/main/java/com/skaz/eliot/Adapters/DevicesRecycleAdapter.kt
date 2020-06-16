@@ -183,12 +183,14 @@ class DevicesRecycleAdapter(
                         notice_msg_electric.visibility = View.GONE
                         notice_msg_electric.text = ""
                     }
-                    dayUseLbl.text = "${response.t1} кВт*ч"
-                    nightUseLbl.text = "${response.t2} кВт*ч"
-                    allUseLbl.text = "${response.t1 + response.t2} кВт*ч"
+                    dayUseLbl.text = "${response.t1.format(2)} кВт*ч"
+                    nightUseLbl.text = "${response.t2.format(2)} кВт*ч"
+                    allUseLbl.text = "${(response.t1 + response.t2).format(2)} кВт*ч"
                 }
             }
         }
+
+        private fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
         fun waterRequest(wrapper: DeviceWrapper, messageText: String) {
             durationUseLblWater.text = messageText
@@ -288,11 +290,11 @@ class DevicesRecycleAdapter(
             deviceLastAct.text =
                 "Последняя активность: ${if (wrapper.device.device_info != null) wrapper.device.device_info[0].last_act else ""}"
             dayUseLbl.text =
-                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t1 else ""} кВт*ч"
+                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t1.format(2) else ""} кВт*ч"
             nightUseLbl.text =
-                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t2 else ""} кВт*ч"
+                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t2.format(2) else ""} кВт*ч"
             allUseLbl.text =
-                "${if (wrapper.device.accumulated_en != null) wrapper.device.accumulated_en!!.t1 + wrapper.device.accumulated_en!!.t2 else ""} кВт*ч" //Todo summa klvt
+                "${if (wrapper.device.accumulated_en != null) (wrapper.device.accumulated_en!!.t1 + wrapper.device.accumulated_en!!.t2).format(2) else ""} кВт*ч" //Todo summa klvt
             dateLbl.text = wrapper.device.last_data?.date
             pw_1.text = wrapper.device.last_data?.pw_1?.toString()
             pw_2.text = wrapper.device.last_data?.pw_2?.toString()
